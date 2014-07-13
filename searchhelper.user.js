@@ -16,6 +16,7 @@
 // @match      http://www.neopets.com/auctions.phtml?*auction_id=*
 // @match      http://www.neopets.com/winter/snowfaerie*.phtml
 // @match      http://www.neopets.com/quests.phtml
+// @match      http://www.neopets.com/games/kadoatery/index.phtml
 // ==/UserScript==
 
 imgsize = 20; // for the search images
@@ -63,7 +64,7 @@ function sswlink(item) {
 
 function sswopen(item) {
     if($(".sswdrop").hasClass("panel_hidden")) {
-    	$("#sswmenu .imgmenu").click();
+        $("#sswmenu .imgmenu").click();
     }
     
     if($("#ssw-tabs-1").hasClass("ui-tabs-hide")) {
@@ -156,11 +157,12 @@ jQuery.fn.justtext = function() {
  Illusen/Jhudora
  Employment Agency
  Faerie Quest Page
+ Kadoatery
 */
 
 // Auctions
 if(document.URL.indexOf("auction_id") != -1) {
-	nameb = $("b:contains('owned by')");
+    nameb = $("b:contains('owned by')");
     fixname = nameb.html();
     fixname = fixname.substr(0, fixname.indexOf(" (own")); // remove "owned by..."
     nameb.parent().find("img").after(makelinks(fixname));
@@ -270,7 +272,7 @@ if(document.URL.indexOf("kitchen") != -1) {
 
 // illusen & jhudora
 if($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").exists()) {
-	itemname = $("center:contains('Where is my') > b").text();
+    itemname = $("center:contains('Where is my') > b").text();
     $("center:contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
 }
 
@@ -283,6 +285,14 @@ if(document.URL.indexOf("employment") != -1) {
 if(document.URL.indexOf("quests") != -1) {
     $("img[src*='/items/']").each(function(k,v) {
         itemname = $(v).parent().find("b");
+        itemname.after(makelinks(itemname.text()));
+    });
+}
+
+// Kadoatery
+if(document.URL.indexOf("kadoatery") != -1) {
+    $("td:contains('You should give it')").each(function(k,v) {
+        itemname = $(v).find("strong").last();
         itemname.after(makelinks(itemname.text()));
     });
 }
