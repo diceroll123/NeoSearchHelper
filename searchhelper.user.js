@@ -157,7 +157,6 @@ jQuery.fn.justtext = function() {
  Illusen/Jhudora
  Employment Agency
  Faerie Quest Page
- Kadoatery
 */
 
 // Auctions
@@ -291,7 +290,7 @@ if(document.URL.indexOf("quests") != -1) {
 
 // Kadoatery
 if(document.URL.indexOf("kadoatery") != -1) {
-    $("td:contains('You should give it')").each(function(k,v) {
+    $("td:contains('You should give it'):not(:contains('Thanks,'))").each(function(k,v) {
         itemname = $(v).find("strong").last();
         itemname.after(makelinks(itemname.text()));
     });
