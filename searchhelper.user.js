@@ -17,6 +17,7 @@
 // @match      http://www.neopets.com/winter/snowfaerie*.phtml
 // @match      http://www.neopets.com/quests.phtml
 // @match      http://www.neopets.com/games/kadoatery/index.phtml
+// @match      http://www.neopets.com/process_cash_object.phtml
 // ==/UserScript==
 
 imgsize = 20; // for the search images
@@ -44,6 +45,10 @@ var linkmap = { // for urls and images for each search type
     sdb: {
         "url": "http://www.neopets.com/safetydeposit.phtml?obj_name=%s&category=0",
         "img": "http://images.neopets.com/images/emptydepositbox.gif"
+    },
+    closet: {
+        "url": "http://www.neopets.com/closet.phtml?obj_name=%s",
+        "img": "http://images.neopets.com/items/ffu_illusen_armoire.gif"
     },
     jni: {
         "url": "http://items.jellyneo.net/index.php?go=show_items&name=%s&name_type=exact&desc=&cat=0&specialcat=0&status=0&rarity=0&sortby=name&numitems=10",
@@ -118,12 +123,19 @@ function makelinks(item, extras) {
         links += combiner(item, linkmap.sdb.url, linkmap.sdb.img);
     }
     
+    // Closet
+    if(extras.wearable) {
+        if(document.URL.indexOf("closet.phtml") == -1) {
+            links += combiner(item, linkmap.closet.url, linkmap.closet.img);
+        }
+    }
+    
     // JN items
     links += combiner(item, linkmap.jni.url, linkmap.jni.img);
     
     // DTI
     if(extras.wearable) {
-        if(extras.itemid != -1) {
+        if(extras.itemid != -1 && typeof extras.itemid != "undefined") {
             link = "http://impress.openneo.net/items/" + extras.itemid;
         } else {
             link = "http://impress.openneo.net/items?utf8=%E2%9C%93&q=%s&commit=search";
@@ -158,6 +170,18 @@ jQuery.fn.justtext = function() {
  Employment Agency
  Faerie Quest Page
 */
+
+br = "<br>";
+hr = "<hr>";
+
+// Redeeming Cash
+// need to test more when receiving from capsule
+if(document.URL.indexOf("process_cash_object") != -1) {
+    extras = {cash: true, wearable: true};
+    $("img[src*='/items/']").parent().find("b").each(function(k,v) {
+        $(v).before(br).after(makelinks($(v).text(), extras) + br);
+    });
+}
 
 // Auctions
 if(document.URL.indexOf("auction_id") != -1) {
