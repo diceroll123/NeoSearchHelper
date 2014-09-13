@@ -69,7 +69,7 @@ function sswlink(item) {
 
 function sswopen(item) {
     if($(".sswdrop").hasClass("panel_hidden")) {
-        $("#sswmenu .imgmenu").click();
+    	$("#sswmenu .imgmenu").click();
     }
     
     if($("#ssw-tabs-1").hasClass("ui-tabs-hide")) {
@@ -97,10 +97,16 @@ function makelinks(item, extras) {
     
     item = $.trim(item);
     if (typeof extras === "undefined") {
-        extras = {cash: false, wearable: false}
+        extras = {cash: false, wearable: false, tradeable: true}
     }
     
-    if(extras.cash == false) {
+    if (typeof extras.tradeable === "undefined") {
+        extras.tradeable = true;
+    }
+    
+    item = item.replace(/&/g, "%26");
+    
+    if(extras.cash == false && extras.tradeable == true) {
         if(document.URL.indexOf("quests.phtml") == -1) { // doesn't show either SW if you're on a quest
             // SSW
             if(premium) {
@@ -126,7 +132,7 @@ function makelinks(item, extras) {
     // Closet
     if(extras.wearable) {
         if(document.URL.indexOf("closet.phtml") == -1) {
-            links += combiner(item, linkmap.closet.url, linkmap.closet.img);
+        	links += combiner(item, linkmap.closet.url, linkmap.closet.img);
         }
     }
     
@@ -178,14 +184,14 @@ hr = "<hr>";
 // need to test more when receiving from capsule
 if(document.URL.indexOf("process_cash_object") != -1) {
     extras = {cash: true, wearable: true};
-    $("img[src*='/items/']").parent().find("b").each(function(k,v) {
+	$("img[src*='/items/']").parent().find("b").each(function(k,v) {
         $(v).before(br).after(makelinks($(v).text(), extras) + br);
     });
 }
 
 // Auctions
 if(document.URL.indexOf("auction_id") != -1) {
-    nameb = $("b:contains('owned by')");
+	nameb = $("b:contains('owned by')");
     fixname = nameb.html();
     fixname = fixname.substr(0, fixname.indexOf(" (own")); // remove "owned by..."
     nameb.parent().find("img").after(makelinks(fixname));
@@ -199,6 +205,8 @@ if(document.URL.indexOf("inventory") != -1) {
         extras = {cash: $(v).hasClass("otherItem"), wearable: $nametd.hasClass("wearable"), itemid: -1};
         
         if ($nametd.find("hr").exists()) {
+            
+            extras.tradeable = !$nametd.find("span:contains('(no trade)')").exists();
             $nametd.find("hr").before(makelinks($nametd.justtext(), extras));
         } else {
             $nametd.append(makelinks($nametd.justtext(), extras));
@@ -253,7 +261,7 @@ if(document.URL.indexOf("/island/training.phtml?type=status") != -1) {
 if(document.URL.indexOf("/pirates/academy.phtml?type=status") != -1) {
     $("img[src*='/items/']").each(function(k,v) {
         nametd = $(v).parent();
-        itemname = nametd.text();
+        itemname = nametd.parent().find("td > b").eq(0).text();
         nametd.parent().find("td > b").eq(0).after(makelinks(itemname));
     });
 }
@@ -295,7 +303,7 @@ if(document.URL.indexOf("kitchen") != -1) {
 
 // illusen & jhudora
 if($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").exists()) {
-    itemname = $("center:contains('Where is my') > b").text();
+	itemname = $("center:contains('Where is my') > b").text();
     $("center:contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
 }
 
