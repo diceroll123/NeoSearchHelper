@@ -18,6 +18,7 @@
 // @match      http://www.neopets.com/quests.phtml
 // @match      http://www.neopets.com/games/kadoatery/index.phtml
 // @match      http://www.neopets.com/process_cash_object.phtml
+// @match      http://www.neopets.com/hospital.phtml
 // ==/UserScript==
 
 imgsize = 20; // for the search images
@@ -180,8 +181,15 @@ jQuery.fn.justtext = function() {
 br = "<br>";
 hr = "<hr>";
 
+// Hospital
+if(document.URL.indexOf("/hospital.phtml") != -1) {
+	$("img[src*='/items/']").parent().prev().find("b").each(function(k,v) {
+        $(v).after(makelinks($(v).text()) + br).before(br);
+        $(v).parent().width(150);
+    });
+}
+
 // Redeeming Cash
-// need to test more when receiving from capsule
 if(document.URL.indexOf("process_cash_object") != -1) {
     extras = {cash: true, wearable: true};
 	$("img[src*='/items/']").parent().find("b").each(function(k,v) {
