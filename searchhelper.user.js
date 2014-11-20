@@ -20,6 +20,7 @@
 // @match      http://www.neopets.com/process_cash_object.phtml
 // @match      http://www.neopets.com/hospital.phtml
 // @match      http://www.neopets.com/objects.phtml?type=shop*
+// @match      http://www.neopets.com/market.phtml?type=wizard&string=*
 // ==/UserScript==
 
 imgsize = 20; // for the search images
@@ -63,6 +64,15 @@ var linkmap = { // for urls and images for each search type
 
 // user has premium toolbar
 premium = $("#sswmenu .imgmenu").exists();
+
+function getQueryParams(qs) {
+    qs = qs.split("+").join(" ");
+    var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+    while (tokens = re.exec(qs)) {
+        params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+    }
+    return params;
+}
 
 function sswlink(item) {
     // the only different one because it doesn't use a URL
@@ -342,4 +352,10 @@ if(document.URL.indexOf("kadoatery") != -1) {
         itemname = $(v).find("strong").last();
         itemname.after(makelinks(itemname.text()));
     });
+}
+
+// Shop Wiz Auto-Exact
+if(document.URL.indexOf("type=wizard&string=") != -1) {
+    $("[name='shopwizard']").val(getQueryParams(document.location.search).string);
+    $("[name='criteria']").val("exact");
 }
