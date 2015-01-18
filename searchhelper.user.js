@@ -7,7 +7,7 @@
 // @match      http://www.neopets.com/safetydeposit.phtml*
 // @match      http://www.neopets.com/market.phtml?*type=your*
 // @match      http://www.neopets.com/space/coincidence.phtml
-// @match      http://www.neopets.com/island/training.phtml?type=status
+// @match      http://www.neopets.com/island/*training.phtml?type=status
 // @match      http://www.neopets.com/pirates/academy.phtml?type=status
 // @match      http://www.neopets.com/inventory.phtml*
 // @match      http://www.neopets.com/halloween/esophagor*.phtml
@@ -17,6 +17,7 @@
 // @match      http://www.neopets.com/winter/snowfaerie*.phtml
 // @match      http://www.neopets.com/quests.phtml
 // @match      http://www.neopets.com/games/kadoatery/index.phtml
+// @match      http://www.neopets.com/games/kadoatery/*
 // @match      http://www.neopets.com/process_cash_object.phtml
 // @match      http://www.neopets.com/hospital.phtml
 // @match      http://www.neopets.com/objects.phtml?type=shop*
@@ -278,6 +279,13 @@ if(document.URL.indexOf("coincidence") != -1) {
 
 // MI Training
 if(document.URL.indexOf("/island/training.phtml?type=status") != -1) {
+    $("img[src*='/items/']").each(function(k,v) {
+        $(v).after(makelinks($(v).prev().text()) + "<hr>");        
+    });
+}
+
+// Secret Training
+if(document.URL.indexOf("/island/fight_training.phtml?type=status") != -1) {
     $("img[src*='/items/']").each(function(k,v) {
         $(v).after(makelinks($(v).prev().text()) + "<hr>");        
     });
