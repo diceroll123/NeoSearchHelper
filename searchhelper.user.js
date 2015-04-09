@@ -6,6 +6,7 @@
 // @match      http://www.neopets.com/faerieland/darkfaerie.phtml*
 // @match      http://www.neopets.com/safetydeposit.phtml*
 // @match      http://www.neopets.com/market.phtml?*type=your*
+// @match      http://www.neopets.com/market_your.phtml*
 // @match      http://www.neopets.com/space/coincidence.phtml
 // @match      http://www.neopets.com/island/*training.phtml?type=status
 // @match      http://www.neopets.com/pirates/academy.phtml?type=status
@@ -84,13 +85,13 @@ function sswopen(item) {
     if($(".sswdrop").hasClass("panel_hidden")) {
         $("#sswmenu .imgmenu").click();
     }
-    
+
     if($("#ssw-tabs-1").hasClass("ui-tabs-hide")) {
         $('#ssw-tabs').tabs('select', 0);
     }
-    
+
     $("#ssw-criteria").val("exact");
-    
+
     $("#searchstr").val(item);
 }
 
@@ -107,51 +108,51 @@ function combiner(item, url, image) {
 function makelinks(item, extras) {
     // extras is an object that can only have boolean of 'cash' and 'wearable' (for now) | and a string/int number 'itemid' (only needed for wearable being true)
     links = "<br>";
-    
+
     item = $.trim(item);
     if (typeof extras === "undefined") {
         extras = {cash: false, wearable: false, tradeable: true}
     }
-    
+
     if (typeof extras.tradeable === "undefined") {
         extras.tradeable = true;
     }
-    
+
     item = item.replace(/&/g, "%26");
-    
+
     if(extras.cash == false && extras.tradeable == true) {
         if(document.URL.indexOf("quests.phtml") == -1) { // doesn't show either SW if you're on a quest
             // SSW
             if(premium) {
                 links += sswlink(item);
             }
-            
+
             // Regular SW
             links += combiner(item, linkmap.sw.url, linkmap.sw.img);
         }
-        
+
         // TP
         links += combiner(item, linkmap.tp.url, linkmap.tp.img);
-        
+
         // Auctions
         links += combiner(item, linkmap.au.url, linkmap.au.img);
     }
-    
+
     // SDB
     if(document.URL.indexOf("safetydeposit") == -1) {
         links += combiner(item, linkmap.sdb.url, linkmap.sdb.img);
     }
-    
+
     // Closet
     if(extras.wearable) {
         if(document.URL.indexOf("closet.phtml") == -1) {
             links += combiner(item, linkmap.closet.url, linkmap.closet.img);
         }
     }
-    
+
     // JN items
     links += combiner(item, linkmap.jni.url, linkmap.jni.img);
-    
+
     // DTI
     if(extras.wearable) {
         if(extras.itemid != -1 && typeof extras.itemid != "undefined") {
@@ -161,7 +162,7 @@ function makelinks(item, extras) {
         }
         links += combiner(item, link, linkmap.dti.img);
     }
-    
+
     return links;
 }
 
@@ -226,13 +227,13 @@ if(document.URL.indexOf("auction_id") != -1) {
 
 // Inventory
 if(document.URL.indexOf("inventory") != -1) {
-    $("img[src*='/items/']").each(function(k,v) {        
+    $("img[src*='/items/']").each(function(k,v) {
         $nametd = $(v).parent().parent();
-        
+
         extras = {cash: $(v).hasClass("otherItem"), wearable: $nametd.hasClass("wearable"), itemid: -1};
-        
+
         if ($nametd.find("hr").exists()) {
-            
+
             extras.tradeable = !$nametd.find("span:contains('(no trade)')").exists();
             $nametd.find("hr").before(makelinks($nametd.justtext(), extras));
         } else {
@@ -246,7 +247,7 @@ if(document.URL.indexOf("inventory") != -1) {
 if(document.URL.indexOf("safetydeposit") != -1 || document.URL.indexOf("closet") != -1) {
     $("img[src*='/items/']").each(function(k,v) {
         id = $(v).parent().parent().find("td").eq(5).find("input").attr("name").match(/\d+/g)[0];
-        
+
         iswearable = $(v).parent().parent().find("td").eq(1).text().indexOf("(wearable)") != -1;
         if(document.URL.indexOf("closet") != -1) { // because it'll always be wearable if it's in the closet...
             iswearable = true;
@@ -259,12 +260,12 @@ if(document.URL.indexOf("safetydeposit") != -1 || document.URL.indexOf("closet")
 }
 
 // Shop
-if(document.URL.indexOf("type=your") != -1) {
+if(document.URL.indexOf("type=your") != -1 || document.URL.indexOf("market_your") != -1) {
     $("img[src*='/items/']").each(function(k,v) {
         nametd = $(v).parent().parent().find("td").eq(0);
         itemname = nametd.text();
         itemname = itemname.replace(nametd.find(".medText").text(), "");
-        
+
         nametd.find("b").eq(0).after(makelinks(itemname));
     });
 }
@@ -272,7 +273,7 @@ if(document.URL.indexOf("type=your") != -1) {
 // Coincidence
 if(document.URL.indexOf("coincidence") != -1) {
     $("img[src*='/items/']").each(function(k,v) {
-        nametd = $(v).parent();        
+        nametd = $(v).parent();
         nametd.find("b").eq(0).after(makelinks(nametd.justtext()));
     });
 }
@@ -280,14 +281,14 @@ if(document.URL.indexOf("coincidence") != -1) {
 // MI Training
 if(document.URL.indexOf("/island/training.phtml?type=status") != -1) {
     $("img[src*='/items/']").each(function(k,v) {
-        $(v).after(makelinks($(v).prev().text()) + "<hr>");        
+        $(v).after(makelinks($(v).prev().text()) + "<hr>");
     });
 }
 
 // Secret Training
 if(document.URL.indexOf("/island/fight_training.phtml?type=status") != -1) {
     $("img[src*='/items/']").each(function(k,v) {
-        $(v).after(makelinks($(v).prev().text()) + "<hr>");        
+        $(v).after(makelinks($(v).prev().text()) + "<hr>");
     });
 }
 
