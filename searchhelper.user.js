@@ -8,7 +8,7 @@
 // @match      http://www.neopets.com/market.phtml?*type=your*
 // @match      http://www.neopets.com/market_your.phtml*
 // @match      http://www.neopets.com/space/coincidence.phtml
-// @match      http://www.neopets.com/island/*training.phtml?type=status
+// @match      http://www.neopets.com/island/*training.phtml?*type=status*
 // @match      http://www.neopets.com/pirates/academy.phtml?type=status
 // @match      http://www.neopets.com/inventory.phtml*
 // @match      http://www.neopets.com/halloween/esophagor*.phtml
