@@ -22,7 +22,10 @@
 // @match      http://www.neopets.com/process_cash_object.phtml
 // @match      http://www.neopets.com/hospital.phtml
 // @match      http://www.neopets.com/objects.phtml?type=shop*
+// @match      http://www.neopets.com/objects.phtml?obj_type=*
 // @match      http://www.neopets.com/market.phtml?type=wizard&string=*
+// @match      http://www.neopets.com/winter/igloo2.phtml
+// @match      http://www.neopets.com/island/tradingpost.phtml
 // ==/UserScript==
 
 imgsize = 20; // for the search images
@@ -198,6 +201,21 @@ hr = "<hr>";
 if(document.URL.indexOf("objects.phtml?type=shop") != -1) {
     $("img[src*='/items/']").parent().parent().find("b").each(function(k,v) {
         $(v).after(makelinks($(v).text()) + br);
+    });
+}
+
+// Igloo Garage
+if(document.URL.indexOf("/winter/igloo2.phtml") != -1)
+{
+    $("img[src*='/items/']").parent().parent().find("b").each(function(k,v) {
+        $(v).after(makelinks($(v).text()) + br);
+    });
+}
+
+// Trading Post
+if(document.URL.indexOf("/island/tradingpost.phtml") != -1) {
+    $("img[src*='/items/']").each(function(k,v) {
+       $(v).after(makelinks($(this)[0].nextSibling.nodeValue) + br);
     });
 }
 
