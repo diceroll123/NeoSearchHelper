@@ -110,7 +110,7 @@ function combiner(item, url, image) {
 // overall linker thing
 function makelinks(item, extras) {
     // extras is an object that can only have boolean of 'cash' and 'wearable' (for now) | and a string/int number 'itemid' (only needed for wearable being true)
-    links = document.URL.indexOf("/island/tradingpost.phtml") != -1 ? " " : "br";
+    links = document.URL.indexOf("/island/tradingpost.phtml") != -1 ? " " : "<br>";
 
     item = $.trim(item);
     if (typeof extras === "undefined") {
