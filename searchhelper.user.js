@@ -25,7 +25,7 @@
 // @match      http://www.neopets.com/objects.phtml?obj_type=*
 // @match      http://www.neopets.com/market.phtml?type=wizard&string=*
 // @match      http://www.neopets.com/winter/igloo2.phtml
-// @match      http://www.neopets.com/island/tradingpost.phtml
+// @match      http://www.neopets.com/island/tradingpost.phtml*
 // ==/UserScript==
 
 imgsize = 20; // for the search images
