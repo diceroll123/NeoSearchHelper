@@ -205,7 +205,7 @@ if(document.URL.indexOf("objects.phtml?type=shop") != -1 || document.URL.indexOf
 }
 
 // Igloo Garage
-if(document.URL.indexOf("/winter/igloo2.phtml") != -1){
+if(document.URL.indexOf("/winter/igloo2.phtml") != -1) {
     $("img[src*='/items/']").parent().parent().find("b").each(function(k,v) {
         $(v).after(makelinks($(v).text()) + br);
     });
