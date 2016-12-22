@@ -110,7 +110,7 @@ function combiner(item, url, image) {
 // overall linker thing
 function makelinks(item, extras) {
     // extras is an object that can only have boolean of 'cash' and 'wearable' (for now) | and a string/int number 'itemid' (only needed for wearable being true)
-    links = "<br>";
+    links = document.URL.indexOf("/island/tradingpost.phtml") != -1 ? " " : "br";
 
     item = $.trim(item);
     if (typeof extras === "undefined") {
@@ -214,7 +214,7 @@ if(document.URL.indexOf("/winter/igloo2.phtml") != -1) {
 // Trading Post
 if(document.URL.indexOf("/island/tradingpost.phtml") != -1) {
     $("img[src*='/items/']").each(function(k,v) {
-       $(v).after(makelinks($(this)[0].nextSibling.nodeValue) + br);
+       $(this.nextSibling).after(makelinks($(this)[0].nextSibling.nodeValue) + br);
     });
 }
 
