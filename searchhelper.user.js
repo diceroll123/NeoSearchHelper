@@ -198,7 +198,7 @@ br = "<br>";
 hr = "<hr>";
 
 // Main Shops
-if(document.URL.indexOf("objects.phtml?type=shop") != -1) {
+if(document.URL.indexOf("objects.phtml?type=shop") != -1 || document.URL.indexOf("objects.phtml?obj_type=") != -1) {
     $("img[src*='/items/']").parent().parent().find("b").each(function(k,v) {
         $(v).after(makelinks($(v).text()) + br);
     });
