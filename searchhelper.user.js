@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name       Search Helper
+// @name       Neopets - Search Helper
 // @match      http://www.neopets.com/halloween/witchtower*.phtml
 // @match      http://www.neopets.com/island/kitchen*.phtml
 // @match      http://www.neopets.com/medieval/earthfaerie.phtml*
@@ -21,8 +21,7 @@
 // @match      http://www.neopets.com/games/kadoatery/*
 // @match      http://www.neopets.com/process_cash_object.phtml
 // @match      http://www.neopets.com/hospital.phtml
-// @match      http://www.neopets.com/objects.phtml?type=shop*
-// @match      http://www.neopets.com/objects.phtml?obj_type=*
+// @match      http://www.neopets.com/objects.phtml?*type=shop*
 // @match      http://www.neopets.com/market.phtml?type=wizard&string=*
 // @match      http://www.neopets.com/winter/igloo2.phtml
 // @match      http://www.neopets.com/island/tradingpost.phtml*
@@ -32,7 +31,7 @@ imgsize = 20; // for the search images
 
 $("<style type='text/css'>.searchimg { cursor: pointer; height: " + imgsize + "px !important; width: " + imgsize + "px !important;</style>").appendTo("head");
 
-jQuery.fn.exists = function(){return this.length>0;}
+jQuery.fn.exists = function(){return this.length>0;};
 
 var linkmap = { // for urls and images for each search type
     ssw: {
@@ -114,16 +113,16 @@ function makelinks(item, extras) {
 
     item = $.trim(item);
     if (typeof extras === "undefined") {
-        extras = {cash: false, wearable: false, tradeable: true}
+        extras = {cash: false, wearable: false, tradeable: true};
     }
 
     if (typeof extras.tradeable === "undefined") {
         extras.tradeable = true;
     }
 
-    item = item.replace(/&/g, "%26");
+    item = item.replace(/&/g, "%26").replace(/ /g, '+');
 
-    if(extras.cash == false && extras.tradeable == true) {
+    if(extras.cash === false && extras.tradeable === true) {
         if(document.URL.indexOf("quests.phtml") == -1) { // doesn't show either SW if you're on a quest
             // SSW
             if(premium) {
@@ -154,7 +153,7 @@ function makelinks(item, extras) {
     }
 
     // JN items
-    links += combiner(item, linkmap.jni.url, linkmap.jni.img);
+    links += combiner(item, linkmap.jni.url, linkmap.jni.img); // current bug: ampersands are broken for JN, it turns "%26" (which is "&") into the escaped version which is "%2526" FIX IT DAVE
 
     // DTI
     if(extras.wearable) {
@@ -198,7 +197,7 @@ br = "<br>";
 hr = "<hr>";
 
 // Main Shops
-if(document.URL.indexOf("objects.phtml?type=shop") != -1 || document.URL.indexOf("objects.phtml?obj_type=") != -1) {
+if(document.URL.indexOf("objects.phtml?type=shop") != -1) {
     $("img[src*='/items/']").parent().parent().find("b").each(function(k,v) {
         $(v).after(makelinks($(v).text()) + br);
     });
