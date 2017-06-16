@@ -58,7 +58,7 @@ var linkmap = { // for urls and images for each search type
         "img": "http://images.neopets.com/items/ffu_illusen_armoire.gif"
     },
     jni: {
-        "url": "http://items.jellyneo.net/index.php?go=show_items&name=%s&name_type=exact&desc=&cat=0&specialcat=0&status=0&rarity=0&sortby=name&numitems=10",
+        "url": "https://items.jellyneo.net/search/?name=%s&name_type=3",
         "img": "http://images.neopets.com/items/toy_plushie_negg_fish.gif"
     },
     dti: { // had to base64 the image that I have saved since the item now has the hanger on it -.-
@@ -153,7 +153,7 @@ function makelinks(item, extras) {
     }
 
     // JN items
-    links += combiner(item, linkmap.jni.url, linkmap.jni.img); // current bug: ampersands are broken for JN, it turns "%26" (which is "&") into the escaped version which is "%2526" FIX IT DAVE
+    links += combiner(item, linkmap.jni.url, linkmap.jni.img);
 
     // DTI
     if(extras.wearable) {
