@@ -103,7 +103,7 @@ $(".sswstuff").live("click", function() {
 
 function combiner(item, url, image) {
     url = url.replace("%s", item); // javascript needs sprintf.
-    return  "<a target='_blank' href='" + url + "'><img src='" + image + "' class='searchimg'></a>";
+    return  "<a tabindex='-1' target='_blank' href='" + url + "'><img src='" + image + "' class='searchimg'></a>";
 }
 
 // overall linker thing
