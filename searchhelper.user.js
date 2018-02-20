@@ -120,8 +120,9 @@ function makelinks(item, extras) {
         extras.tradeable = true;
     }
 
-    item = item.replace(/&/g, "%26");
+    
     sswurl = sswlink(item);
+    item = item.replace(/&/g, "%26");
     item = item.replace(/ /g, '+');
 
     if(extras.cash === false && extras.tradeable === true) {
