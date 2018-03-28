@@ -6,7 +6,7 @@
 // @match      http://www.neopets.com/faerieland/darkfaerie.phtml*
 // @match      http://www.neopets.com/safetydeposit.phtml*
 // @match      http://www.neopets.com/market.phtml?*type=your*
-// @match      http://www.neopets.com/market_your.phtml*
+// @match      http://www.neopets.com/market.phtml*
 // @match      http://www.neopets.com/space/coincidence.phtml
 // @match      http://www.neopets.com/island/*training.phtml?*type=status*
 // @match      http://www.neopets.com/pirates/academy.phtml?type=status
@@ -120,7 +120,6 @@ function makelinks(item, extras) {
         extras.tradeable = true;
     }
 
-    
     sswurl = sswlink(item);
     item = item.replace(/&/g, "%26");
     item = item.replace(/ /g, '+');
@@ -279,7 +278,7 @@ if(document.URL.indexOf("safetydeposit") != -1 || document.URL.indexOf("closet")
 }
 
 // Shop
-if(document.URL.indexOf("type=your") != -1 || document.URL.indexOf("market_your") != -1) {
+if(document.URL.indexOf("type=your") != -1 || $("[name=subbynext]").length == 2) { // because pressing the Previous/Next 30 is a POST and has nothing of value in the URL
     $("img[src*='/items/']").each(function(k,v) {
         nametd = $(v).parent().parent().find("td").eq(0);
         itemname = nametd.text();
