@@ -14,7 +14,7 @@
 // @match      http://www.neopets.com/halloween/esophagor*.phtml
 // @match      http://www.neopets.com/faerieland/employ/employment.phtml?*job_id=*
 // @match      http://www.neopets.com/closet.phtml*
-// @match      http://www.neopets.com/auctions.phtml?*auction_id=*
+// @match      http://www.neopets.com/auctions.phtml*
 // @match      http://www.neopets.com/winter/snowfaerie*.phtml
 // @match      http://www.neopets.com/quests.phtml
 // @match      http://www.neopets.com/games/kadoatery/index.phtml
@@ -25,6 +25,7 @@
 // @match      http://www.neopets.com/market.phtml?type=wizard&string=*
 // @match      http://www.neopets.com/winter/igloo2.phtml
 // @match      http://www.neopets.com/island/tradingpost.phtml*
+// @match      http://www.neopets.com/genie.phtml
 // ==/UserScript==
 
 imgsize = 20; // for the search images
@@ -232,6 +233,14 @@ if(document.URL.indexOf("process_cash_object") != -1) {
     extras = {cash: true, wearable: true};
     $("img[src*='/items/']").parent().find("b").each(function(k,v) {
         $(v).before(br).after(makelinks($(v).text(), extras) + br);
+    });
+}
+
+// Auction Main
+if(document.URL.indexOf("/auctions.phtml") != -1 && document.URL.indexOf("auction_id") == -1 || document.URL.indexOf("genie.phtml") != -1) {
+    $("td[bgcolor*='#dddd77']").parent().parent().children().eq(0).prepend("<td bgcolor='#dddd77' align='center'><b>Helpers</b></td>")
+    $("img[src*='/items/']").parent().parent().parent().each(function(k,v) {
+        $(v).prepend(makelinks($(v).children().eq(2).text()));
     });
 }
 
