@@ -5,7 +5,7 @@
 // @match      http://www.neopets.com/medieval/earthfaerie.phtml*
 // @match      http://www.neopets.com/faerieland/darkfaerie.phtml*
 // @match      http://www.neopets.com/safetydeposit.phtml*
-// @match      http://www.neopets.com/market.phtml?*type=your*
+// @match      http://www.neopets.com/market_your.phtml*
 // @match      http://www.neopets.com/market.phtml*
 // @match      http://www.neopets.com/space/coincidence.phtml
 // @match      http://www.neopets.com/island/*training.phtml?*type=status*
