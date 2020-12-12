@@ -27,11 +27,13 @@
 // @match      http://www.neopets.com/island/tradingpost.phtml*
 // ==/UserScript==
 
-imgsize = 20; // for the search images
+const imgsize = 20; // for the search images
 
 $("<style type='text/css'>.searchimg { cursor: pointer; height: " + imgsize + "px !important; width: " + imgsize + "px !important;</style>").appendTo("head");
 
-jQuery.fn.exists = function(){return this.length>0;};
+jQuery.fn.exists = function () {
+    return this.length > 0;
+};
 
 const linkmap = { // for urls and images for each search type
     ssw: {
@@ -80,15 +82,15 @@ function getQueryParams(qs) {
 
 function sswlink(item) {
     // the only different one because it doesn't use a URL
-    return "<img item='"+ item + "' class='sswstuff searchimg' src='" + linkmap.ssw.img + "'>";
+    return "<img item='" + item + "' class='sswstuff searchimg' src='" + linkmap.ssw.img + "'>";
 }
 
 function sswopen(item) {
-    if($(".sswdrop").hasClass("panel_hidden")) {
+    if ($(".sswdrop").hasClass("panel_hidden")) {
         $("#sswmenu .imgmenu").click();
     }
 
-    if($("#ssw-tabs-1").hasClass("ui-tabs-hide")) {
+    if ($("#ssw-tabs-1").hasClass("ui-tabs-hide")) {
         $('#ssw-tabs').tabs('select', 0);
     }
 
@@ -97,13 +99,13 @@ function sswopen(item) {
     $("#searchstr").val(item);
 }
 
-$(".sswstuff").live("click", function() {
+$(".sswstuff").live("click", function () {
     sswopen($(this).attr("item"));
 });
 
 function combiner(item, url, image) {
     url = url.replace("%s", item); // javascript needs sprintf.
-    return  "<a tabindex='-1' target='_blank' href='" + url + "'><img src='" + image + "' class='searchimg'></a>";
+    return "<a tabindex='-1' target='_blank' href='" + url + "'><img src='" + image + "' class='searchimg'></a>";
 }
 
 // overall linker thing
@@ -124,8 +126,8 @@ function makelinks(item, extras) {
     item = item.replace(/&/g, "%26");
     item = item.replace(/ /g, '+');
 
-    if(extras.cash === false && extras.tradeable === true) {
-        if(document.URL.includes("quests.phtml") === false) { // doesn't show either SW if you're on a quest
+    if (extras.cash === false && extras.tradeable === true) {
+        if (document.URL.includes("quests.phtml") === false) { // doesn't show either SW if you're on a quest
             // SSW
             if (premium) {
                 links += sswurl;
@@ -143,12 +145,12 @@ function makelinks(item, extras) {
     }
 
     // SDB
-    if(document.URL.includes("safetydeposit") === false) {
+    if (document.URL.includes("safetydeposit") === false) {
         links += combiner(item, linkmap.sdb.url, linkmap.sdb.img);
     }
 
     // Closet
-    if(extras.wearable && document.URL.includes("closet.phtml") === false) {
+    if (extras.wearable && document.URL.includes("closet.phtml") === false) {
         links += combiner(item, linkmap.closet.url, linkmap.closet.img);
     }
 
@@ -156,9 +158,9 @@ function makelinks(item, extras) {
     links += combiner(item, linkmap.jni.url, linkmap.jni.img);
 
     // DTI
-    if(extras.wearable) {
+    if (extras.wearable) {
         let link = "http://impress.openneo.net/items?utf8=%E2%9C%93&q=%s&commit=search";
-        if(extras.itemid !== -1 && typeof extras.itemid != "undefined") {
+        if (extras.itemid !== -1 && typeof extras.itemid != "undefined") {
             link = "http://impress.openneo.net/items/" + extras.itemid;
         }
         links += combiner(item, link, linkmap.dti.img);
@@ -167,7 +169,7 @@ function makelinks(item, extras) {
     return links;
 }
 
-jQuery.fn.justtext = function() {
+jQuery.fn.justtext = function () {
     return $(this).clone().children().remove().end().text();
 };
 
@@ -196,44 +198,44 @@ br = "<br>";
 hr = "<hr>";
 
 // Main Shops
-if(document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
-    $("img[src*='/items/']").parent().parent().find("b").each(function(k,v) {
+if (document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
+    $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
         $(v).after(makelinks($(v).text()) + br);
     });
 }
 
 // Igloo Garage
-if(document.URL.includes("/winter/igloo2.phtml")) {
-    $("img[src*='/items/']").parent().parent().find("b").each(function(k,v) {
+if (document.URL.includes("/winter/igloo2.phtml")) {
+    $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
         $(v).after(makelinks($(v).text()) + br);
     });
 }
 
 // Trading Post
-if(document.URL.includes("/island/tradingpost.phtml")) {
-    $("img[src*='/items/']").each(function(k,v) {
-       $(this.nextSibling).after(makelinks($(this)[0].nextSibling.nodeValue) + br);
+if (document.URL.includes("/island/tradingpost.phtml")) {
+    $("img[src*='/items/']").each(function (k, v) {
+        $(this.nextSibling).after(makelinks($(this)[0].nextSibling.nodeValue) + br);
     });
 }
 
 // Hospital
-if(document.URL.includes("/hospital.phtml")) {
-    $("img[src*='/items/']").parent().prev().find("b").each(function(k,v) {
+if (document.URL.includes("/hospital.phtml")) {
+    $("img[src*='/items/']").parent().prev().find("b").each(function (k, v) {
         $(v).after(makelinks($(v).text()) + br).before(br);
         $(v).parent().width(150);
     });
 }
 
 // Redeeming Cash
-if(document.URL.includes("process_cash_object")) {
+if (document.URL.includes("process_cash_object")) {
     extras = {cash: true, wearable: true};
-    $("img[src*='/items/']").parent().find("b").each(function(k,v) {
+    $("img[src*='/items/']").parent().find("b").each(function (k, v) {
         $(v).before(br).after(makelinks($(v).text(), extras) + br);
     });
 }
 
 // Auctions
-if(document.URL.includes("auction_id")) {
+if (document.URL.includes("auction_id")) {
     nameb = $("b:contains('owned by')");
     fixname = nameb.html();
     fixname = fixname.substr(0, fixname.indexOf(" (own")); // remove "owned by..."
@@ -241,8 +243,8 @@ if(document.URL.includes("auction_id")) {
 }
 
 // Inventory
-if(document.URL.includes("inventory")) {
-    $("img[src*='/items/']").each(function(k,v) {
+if (document.URL.includes("inventory")) {
+    $("img[src*='/items/']").each(function (k, v) {
         let $nametd = $(v).parent().parent();
 
         let extras = {cash: $(v).hasClass("otherItem"), wearable: $nametd.hasClass("wearable"), itemid: -1};
@@ -258,12 +260,12 @@ if(document.URL.includes("inventory")) {
 
 // SDB & Closet
 // only downside is not knowing if something is NC if it's in the closet. Oh well, no way to know.
-if(document.URL.includes("safetydeposit") || document.URL.includes("closet")) {
-    $("img[src*='/items/']").each(function(k,v) {
+if (document.URL.includes("safetydeposit") || document.URL.includes("closet")) {
+    $("img[src*='/items/']").each(function (k, v) {
         let id = $(v).parent().parent().find("td").eq(5).find("input").attr("name").match(/\d+/g)[0];
 
         let iswearable = $(v).parent().parent().find("td").eq(1).text().includes("(wearable)");
-        if(document.URL.includes("closet")) { // because it'll always be wearable if it's in the closet...
+        if (document.URL.includes("closet")) { // because it'll always be wearable if it's in the closet...
             iswearable = true;
         }
         let category = $(v).parent().parent().find("td").eq(3);
@@ -275,6 +277,7 @@ if(document.URL.includes("safetydeposit") || document.URL.includes("closet")) {
 
 // Your Shop
 if (document.URL.includes("type=your") || document.URL.includes("market_your") || $("[name=subbynext]").length == 2) { // because pressing the Previous/Next 30 is a POST and has nothing of value in the URL
+    $("img[src*='/items/']").each(function (k, v) {
         let nametd = $(v).parent().parent().find("td").eq(0);
         let itemname = nametd.text();
         itemname = itemname.replace(nametd.find(".medText").text(), "");
@@ -284,30 +287,30 @@ if (document.URL.includes("type=your") || document.URL.includes("market_your") |
 }
 
 // Coincidence
-if(document.URL.includes("coincidence")) {
-    $("img[src*='/items/']").each(function(k,v) {
+if (document.URL.includes("coincidence")) {
+    $("img[src*='/items/']").each(function (k, v) {
         nametd = $(v).parent();
         nametd.find("b").eq(0).after(makelinks(nametd.justtext()));
     });
 }
 
 // MI Training
-if(document.URL.includes("/island/training.phtml?type=status")) {
-    $("img[src*='/items/']").each(function(k,v) {
+if (document.URL.includes("/island/training.phtml?type=status")) {
+    $("img[src*='/items/']").each(function (k, v) {
         $(v).after(makelinks($(v).prev().text()) + "<hr>");
     });
 }
 
 // Secret Training
-if(document.URL.includes("/island/fight_training.phtml?type=status")) {
-    $("img[src*='/items/']").each(function(k,v) {
+if (document.URL.includes("/island/fight_training.phtml?type=status")) {
+    $("img[src*='/items/']").each(function (k, v) {
         $(v).after(makelinks($(v).prev().text()) + "<hr>");
     });
 }
 
 // KI Training
-if(document.URL.includes("/pirates/academy.phtml?type=status")) {
-    $("img[src*='/items/']").each(function(k,v) {
+if (document.URL.includes("/pirates/academy.phtml?type=status")) {
+    $("img[src*='/items/']").each(function (k, v) {
         let nametd = $(v).parent();
         let itemname = nametd.parent().find("td > b").eq(0).text();
         nametd.parent().find("td > b").eq(0).after(makelinks(itemname));
@@ -316,41 +319,41 @@ if(document.URL.includes("/pirates/academy.phtml?type=status")) {
 
 // Snow Faerie
 // essentially same as kitchen. woo, lazy!
-if(document.URL.includes("snowfaerie")) {
+if (document.URL.includes("snowfaerie")) {
     addhr = (document.URL.includes("snowfaerie2") === false);
     hr = addhr ? "<hr>" : "";
-    $("img[src*='/items/']").parent().find("b").each(function(k,v) {
+    $("img[src*='/items/']").parent().find("b").each(function (k, v) {
         $(v).after(makelinks($(v).text()) + hr);
     });
 }
 
 // Esophagor
-if(document.URL.includes("esophagor")) {
-    $("img[src*='/items/']").each(function(k,v) {
+if (document.URL.includes("esophagor")) {
+    $("img[src*='/items/']").each(function (k, v) {
         let itemname = $(v).parent().find("b");
         itemname.after(makelinks(itemname.text()));
     });
 }
 
 // Edna
-if(document.URL.includes("witchtower")) {
-    $("img[src*='/items/']").each(function(k,v) {
+if (document.URL.includes("witchtower")) {
+    $("img[src*='/items/']").each(function (k, v) {
         let itemname = $(v).parent().find("b");
         itemname.after(makelinks(itemname.text()));
     });
 }
 
 // Kitchen
-if(document.URL.includes("kitchen")) {
+if (document.URL.includes("kitchen")) {
     addhr = (document.URL.includes("kitchen2") === false);
     hr = addhr ? "<hr>" : "";
-    $("img[src*='/items/']").parent().find("b").each(function(k,v) {
+    $("img[src*='/items/']").parent().find("b").each(function (k, v) {
         $(v).after(makelinks($(v).text()) + hr);
     });
 }
 
 // illusen & jhudora
-if($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").exists()) {
+if ($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").exists()) {
     itemname = $("center:contains('Where is my') > b").text();
     $("center:contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
 }
@@ -369,23 +372,23 @@ if (document.URL.includes("employment")) {
 }
 
 // Faerie Quests
-if(document.URL.includes("quests")) {
-    $("img[src*='/items/']").each(function(k,v) {
+if (document.URL.includes("quests")) {
+    $("img[src*='/items/']").each(function (k, v) {
         itemname = $(v).parent().find("b");
         itemname.after(makelinks(itemname.text()));
     });
 }
 
 // Kadoatery
-if(document.URL.includes("kadoatery")) {
-    $("td:contains('You should give it'):not(:contains('Thanks,'))").each(function(k,v) {
+if (document.URL.includes("kadoatery")) {
+    $("td:contains('You should give it'):not(:contains('Thanks,'))").each(function (k, v) {
         itemname = $(v).find("strong").last();
         itemname.after(makelinks(itemname.text()));
     });
 }
 
 // Shop Wiz Auto-Exact
-if(document.URL.includes("type=wizard&string=")) {
+if (document.URL.includes("type=wizard&string=")) {
     $("[name='shopwizard']").val(getQueryParams(document.location.search).string);
     $("[name='criteria']").val("exact");
 }
