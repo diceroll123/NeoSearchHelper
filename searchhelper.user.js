@@ -120,14 +120,15 @@ function makelinks(item, extras) {
         extras.tradeable = true;
     }
 
+    const sswurl = sswlink(item);
     item = item.replace(/&/g, "%26");
     item = item.replace(/ /g, '+');
 
     if(extras.cash === false && extras.tradeable === true) {
         if(document.URL.includes("quests.phtml") === false) { // doesn't show either SW if you're on a quest
             // SSW
-            if(premium) {
-                links += sswlink(item);
+            if (premium) {
+                links += sswurl;
             }
 
             // Regular SW
