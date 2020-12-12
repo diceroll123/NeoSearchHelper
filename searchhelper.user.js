@@ -273,9 +273,8 @@ if(document.URL.includes("safetydeposit") || document.URL.includes("closet")) {
     });
 }
 
-// Shop
-if(document.URL.includes("type=your") || $("[name=subbynext]").length == 2) { // because pressing the Previous/Next 30 is a POST and has nothing of value in the URL
-    $("img[src*='/items/']").each(function(k,v) {
+// Your Shop
+if (document.URL.includes("type=your") || document.URL.includes("market_your") || $("[name=subbynext]").length == 2) { // because pressing the Previous/Next 30 is a POST and has nothing of value in the URL
         let nametd = $(v).parent().parent().find("td").eq(0);
         let itemname = nametd.text();
         itemname = itemname.replace(nametd.find(".medText").text(), "");
