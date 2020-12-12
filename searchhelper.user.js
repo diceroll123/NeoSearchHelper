@@ -12,7 +12,7 @@
 // @match      http://www.neopets.com/pirates/academy.phtml?type=status
 // @match      http://www.neopets.com/inventory.phtml*
 // @match      http://www.neopets.com/halloween/esophagor*.phtml
-// @match      http://www.neopets.com/faerieland/employ/employment.phtml?*job_id=*
+// @match      http://www.neopets.com/faerieland/employ/employment.phtml*
 // @match      http://www.neopets.com/closet.phtml*
 // @match      http://www.neopets.com/auctions.phtml?*auction_id=*
 // @match      http://www.neopets.com/winter/snowfaerie*.phtml
@@ -357,8 +357,16 @@ if($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").e
 }
 
 // employment agency
-if(document.URL.includes("employment")) {
-    $("b:contains('Find')").eq(0).after(makelinks($("b:contains('Find')").eq(0).justtext()));
+if (document.URL.includes("employment")) {
+    if (document.URL.includes("type=jobs")) {
+        $("b:contains('Find')").each(function (k, v) {
+            let itemname = $(v).parent().clone().find("b").remove().end().html().split("<br>")[0];
+            $($(v)[0].nextSibling).after(makelinks(itemname));
+        });
+    }
+    if (document.URL.includes("job_id")) {
+        $("b:contains('Find')").eq(0).after(makelinks($("b:contains('Find')").eq(0).justtext()));
+    }
 }
 
 // Faerie Quests
