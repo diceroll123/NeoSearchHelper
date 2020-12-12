@@ -33,7 +33,7 @@ $("<style type='text/css'>.searchimg { cursor: pointer; height: " + imgsize + "p
 
 jQuery.fn.exists = function(){return this.length>0;};
 
-var linkmap = { // for urls and images for each search type
+const linkmap = { // for urls and images for each search type
     ssw: {
         "img": "http://images.neopets.com/shopkeepers/super_shopwizard.gif"
     },
@@ -109,7 +109,7 @@ function combiner(item, url, image) {
 // overall linker thing
 function makelinks(item, extras) {
     // extras is an object that can only have boolean of 'cash' and 'wearable' (for now) | and a string/int number 'itemid' (only needed for wearable being true)
-    links = document.URL.indexOf("/island/tradingpost.phtml") != -1 ? " " : "<br>";
+    let links = document.URL.includes("/island/tradingpost.phtml") ? " " : "<br>";
 
     item = $.trim(item);
     if (typeof extras === "undefined") {
@@ -120,15 +120,14 @@ function makelinks(item, extras) {
         extras.tradeable = true;
     }
 
-    sswurl = sswlink(item);
     item = item.replace(/&/g, "%26");
     item = item.replace(/ /g, '+');
 
     if(extras.cash === false && extras.tradeable === true) {
-        if(document.URL.indexOf("quests.phtml") == -1) { // doesn't show either SW if you're on a quest
+        if(document.URL.includes("quests.phtml") === false) { // doesn't show either SW if you're on a quest
             // SSW
             if(premium) {
-                links += sswurl;
+                links += sswlink(item);
             }
 
             // Regular SW
@@ -143,15 +142,13 @@ function makelinks(item, extras) {
     }
 
     // SDB
-    if(document.URL.indexOf("safetydeposit") == -1) {
+    if(document.URL.includes("safetydeposit") === false) {
         links += combiner(item, linkmap.sdb.url, linkmap.sdb.img);
     }
 
     // Closet
-    if(extras.wearable) {
-        if(document.URL.indexOf("closet.phtml") == -1) {
-            links += combiner(item, linkmap.closet.url, linkmap.closet.img);
-        }
+    if(extras.wearable && document.URL.includes("closet.phtml") === false) {
+        links += combiner(item, linkmap.closet.url, linkmap.closet.img);
     }
 
     // JN items
@@ -159,10 +156,9 @@ function makelinks(item, extras) {
 
     // DTI
     if(extras.wearable) {
-        if(extras.itemid != -1 && typeof extras.itemid != "undefined") {
+        let link = "http://impress.openneo.net/items?utf8=%E2%9C%93&q=%s&commit=search";
+        if(extras.itemid !== -1 && typeof extras.itemid != "undefined") {
             link = "http://impress.openneo.net/items/" + extras.itemid;
-        } else {
-            link = "http://impress.openneo.net/items?utf8=%E2%9C%93&q=%s&commit=search";
         }
         links += combiner(item, link, linkmap.dti.img);
     }
@@ -199,28 +195,28 @@ br = "<br>";
 hr = "<hr>";
 
 // Main Shops
-if(document.URL.indexOf("objects.phtml?") != -1 && document.URL.indexOf("type=shop") != -1) {
+if(document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
     $("img[src*='/items/']").parent().parent().find("b").each(function(k,v) {
         $(v).after(makelinks($(v).text()) + br);
     });
 }
 
 // Igloo Garage
-if(document.URL.indexOf("/winter/igloo2.phtml") != -1) {
+if(document.URL.includes("/winter/igloo2.phtml")) {
     $("img[src*='/items/']").parent().parent().find("b").each(function(k,v) {
         $(v).after(makelinks($(v).text()) + br);
     });
 }
 
 // Trading Post
-if(document.URL.indexOf("/island/tradingpost.phtml") != -1) {
+if(document.URL.includes("/island/tradingpost.phtml")) {
     $("img[src*='/items/']").each(function(k,v) {
        $(this.nextSibling).after(makelinks($(this)[0].nextSibling.nodeValue) + br);
     });
 }
 
 // Hospital
-if(document.URL.indexOf("/hospital.phtml") != -1) {
+if(document.URL.includes("/hospital.phtml")) {
     $("img[src*='/items/']").parent().prev().find("b").each(function(k,v) {
         $(v).after(makelinks($(v).text()) + br).before(br);
         $(v).parent().width(150);
@@ -228,7 +224,7 @@ if(document.URL.indexOf("/hospital.phtml") != -1) {
 }
 
 // Redeeming Cash
-if(document.URL.indexOf("process_cash_object") != -1) {
+if(document.URL.includes("process_cash_object")) {
     extras = {cash: true, wearable: true};
     $("img[src*='/items/']").parent().find("b").each(function(k,v) {
         $(v).before(br).after(makelinks($(v).text(), extras) + br);
@@ -236,7 +232,7 @@ if(document.URL.indexOf("process_cash_object") != -1) {
 }
 
 // Auctions
-if(document.URL.indexOf("auction_id") != -1) {
+if(document.URL.includes("auction_id")) {
     nameb = $("b:contains('owned by')");
     fixname = nameb.html();
     fixname = fixname.substr(0, fixname.indexOf(" (own")); // remove "owned by..."
@@ -244,14 +240,13 @@ if(document.URL.indexOf("auction_id") != -1) {
 }
 
 // Inventory
-if(document.URL.indexOf("inventory") != -1) {
+if(document.URL.includes("inventory")) {
     $("img[src*='/items/']").each(function(k,v) {
-        $nametd = $(v).parent().parent();
+        let $nametd = $(v).parent().parent();
 
-        extras = {cash: $(v).hasClass("otherItem"), wearable: $nametd.hasClass("wearable"), itemid: -1};
+        let extras = {cash: $(v).hasClass("otherItem"), wearable: $nametd.hasClass("wearable"), itemid: -1};
 
         if ($nametd.find("hr").exists()) {
-
             extras.tradeable = !$nametd.find("span:contains('(no trade)')").exists();
             $nametd.find("hr").before(makelinks($nametd.justtext(), extras));
         } else {
@@ -262,26 +257,26 @@ if(document.URL.indexOf("inventory") != -1) {
 
 // SDB & Closet
 // only downside is not knowing if something is NC if it's in the closet. Oh well, no way to know.
-if(document.URL.indexOf("safetydeposit") != -1 || document.URL.indexOf("closet") != -1) {
+if(document.URL.includes("safetydeposit") || document.URL.includes("closet")) {
     $("img[src*='/items/']").each(function(k,v) {
-        id = $(v).parent().parent().find("td").eq(5).find("input").attr("name").match(/\d+/g)[0];
+        let id = $(v).parent().parent().find("td").eq(5).find("input").attr("name").match(/\d+/g)[0];
 
-        iswearable = $(v).parent().parent().find("td").eq(1).text().indexOf("(wearable)") != -1;
-        if(document.URL.indexOf("closet") != -1) { // because it'll always be wearable if it's in the closet...
+        let iswearable = $(v).parent().parent().find("td").eq(1).text().includes("(wearable)");
+        if(document.URL.includes("closet")) { // because it'll always be wearable if it's in the closet...
             iswearable = true;
         }
-        category = $(v).parent().parent().find("td").eq(3);
-        extras = {cash: (category.text().trim() == "Neocash"), wearable: iswearable, itemid: id};
-        nametd = $(v).parent().parent().find("td").eq(1);
+        let category = $(v).parent().parent().find("td").eq(3);
+        let extras = {cash: (category.text().trim() == "Neocash"), wearable: iswearable, itemid: id};
+        let nametd = $(v).parent().parent().find("td").eq(1);
         nametd.find("b").eq(0).after(makelinks(nametd.find("b").eq(0).justtext(), extras));
     });
 }
 
 // Shop
-if(document.URL.indexOf("type=your") != -1 || $("[name=subbynext]").length == 2) { // because pressing the Previous/Next 30 is a POST and has nothing of value in the URL
+if(document.URL.includes("type=your") || $("[name=subbynext]").length == 2) { // because pressing the Previous/Next 30 is a POST and has nothing of value in the URL
     $("img[src*='/items/']").each(function(k,v) {
-        nametd = $(v).parent().parent().find("td").eq(0);
-        itemname = nametd.text();
+        let nametd = $(v).parent().parent().find("td").eq(0);
+        let itemname = nametd.text();
         itemname = itemname.replace(nametd.find(".medText").text(), "");
 
         nametd.find("b").eq(0).after(makelinks(itemname));
@@ -289,7 +284,7 @@ if(document.URL.indexOf("type=your") != -1 || $("[name=subbynext]").length == 2)
 }
 
 // Coincidence
-if(document.URL.indexOf("coincidence") != -1) {
+if(document.URL.includes("coincidence")) {
     $("img[src*='/items/']").each(function(k,v) {
         nametd = $(v).parent();
         nametd.find("b").eq(0).after(makelinks(nametd.justtext()));
@@ -297,32 +292,32 @@ if(document.URL.indexOf("coincidence") != -1) {
 }
 
 // MI Training
-if(document.URL.indexOf("/island/training.phtml?type=status") != -1) {
+if(document.URL.includes("/island/training.phtml?type=status")) {
     $("img[src*='/items/']").each(function(k,v) {
         $(v).after(makelinks($(v).prev().text()) + "<hr>");
     });
 }
 
 // Secret Training
-if(document.URL.indexOf("/island/fight_training.phtml?type=status") != -1) {
+if(document.URL.includes("/island/fight_training.phtml?type=status")) {
     $("img[src*='/items/']").each(function(k,v) {
         $(v).after(makelinks($(v).prev().text()) + "<hr>");
     });
 }
 
 // KI Training
-if(document.URL.indexOf("/pirates/academy.phtml?type=status") != -1) {
+if(document.URL.includes("/pirates/academy.phtml?type=status")) {
     $("img[src*='/items/']").each(function(k,v) {
-        nametd = $(v).parent();
-        itemname = nametd.parent().find("td > b").eq(0).text();
+        let nametd = $(v).parent();
+        let itemname = nametd.parent().find("td > b").eq(0).text();
         nametd.parent().find("td > b").eq(0).after(makelinks(itemname));
     });
 }
 
 // Snow Faerie
 // essentially same as kitchen. woo, lazy!
-if(document.URL.indexOf("snowfaerie") != -1) {
-    addhr = (document.URL.indexOf("snowfaerie2") == -1);
+if(document.URL.includes("snowfaerie")) {
+    addhr = (document.URL.includes("snowfaerie2") === false);
     hr = addhr ? "<hr>" : "";
     $("img[src*='/items/']").parent().find("b").each(function(k,v) {
         $(v).after(makelinks($(v).text()) + hr);
@@ -330,24 +325,24 @@ if(document.URL.indexOf("snowfaerie") != -1) {
 }
 
 // Esophagor
-if(document.URL.indexOf("esophagor") != -1) {
+if(document.URL.includes("esophagor")) {
     $("img[src*='/items/']").each(function(k,v) {
-        itemname = $(v).parent().find("b");
+        let itemname = $(v).parent().find("b");
         itemname.after(makelinks(itemname.text()));
     });
 }
 
 // Edna
-if(document.URL.indexOf("witchtower") != -1) {
+if(document.URL.includes("witchtower")) {
     $("img[src*='/items/']").each(function(k,v) {
-        itemname = $(v).parent().find("b");
+        let itemname = $(v).parent().find("b");
         itemname.after(makelinks(itemname.text()));
     });
 }
 
 // Kitchen
-if(document.URL.indexOf("kitchen") != -1) {
-    addhr = (document.URL.indexOf("kitchen2") == -1);
+if(document.URL.includes("kitchen")) {
+    addhr = (document.URL.includes("kitchen2") === false);
     hr = addhr ? "<hr>" : "";
     $("img[src*='/items/']").parent().find("b").each(function(k,v) {
         $(v).after(makelinks($(v).text()) + hr);
@@ -361,12 +356,12 @@ if($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").e
 }
 
 // employment agency
-if(document.URL.indexOf("employment") != -1) {
+if(document.URL.includes("employment")) {
     $("b:contains('Find')").eq(0).after(makelinks($("b:contains('Find')").eq(0).justtext()));
 }
 
 // Faerie Quests
-if(document.URL.indexOf("quests") != -1) {
+if(document.URL.includes("quests")) {
     $("img[src*='/items/']").each(function(k,v) {
         itemname = $(v).parent().find("b");
         itemname.after(makelinks(itemname.text()));
@@ -374,7 +369,7 @@ if(document.URL.indexOf("quests") != -1) {
 }
 
 // Kadoatery
-if(document.URL.indexOf("kadoatery") != -1) {
+if(document.URL.includes("kadoatery")) {
     $("td:contains('You should give it'):not(:contains('Thanks,'))").each(function(k,v) {
         itemname = $(v).find("strong").last();
         itemname.after(makelinks(itemname.text()));
@@ -382,7 +377,7 @@ if(document.URL.indexOf("kadoatery") != -1) {
 }
 
 // Shop Wiz Auto-Exact
-if(document.URL.indexOf("type=wizard&string=") != -1) {
+if(document.URL.includes("type=wizard&string=")) {
     $("[name='shopwizard']").val(getQueryParams(document.location.search).string);
     $("[name='criteria']").val("exact");
 }
