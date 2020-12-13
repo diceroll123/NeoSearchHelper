@@ -27,6 +27,7 @@
 // @match      http://www.neopets.com/winter/igloo2.phtml
 // @match      http://www.neopets.com/island/tradingpost.phtml*
 // @match      http://www.neopets.com/generalstore.phtml*
+// @match      http://www.neopets.com/faerieland/hiddentower938.phtml
 // ==/UserScript==
 
 const imgsize = 20; // for the search images
@@ -392,6 +393,13 @@ if (document.URL.includes("kadoatery")) {
 // General Store
 if (document.URL.includes("generalstore.phtml")) {
     $("td:contains('Cost'):not(:has('td'))").find("strong").each(function (index, element) {
+        $(element).after(makelinks($(element).text()));
+    });
+}
+
+// Hidden Tower
+if (document.URL.includes("hiddentower938.phtml")) {
+    $(".content table").find("b:not([style*='red;'])").each(function (index, element) {
         $(element).after(makelinks($(element).text()));
     });
 }
