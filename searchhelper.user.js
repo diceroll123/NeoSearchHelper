@@ -26,6 +26,7 @@
 // @match      http://www.neopets.com/market.phtml?type=wizard&string=*
 // @match      http://www.neopets.com/winter/igloo2.phtml
 // @match      http://www.neopets.com/island/tradingpost.phtml*
+// @match      http://www.neopets.com/generalstore.phtml*
 // ==/UserScript==
 
 const imgsize = 20; // for the search images
@@ -385,6 +386,13 @@ if (document.URL.includes("kadoatery")) {
     $("td:contains('You should give it'):not(:contains('Thanks,'))").each(function (k, v) {
         itemname = $(v).find("strong").last();
         itemname.after(makelinks(itemname.text()));
+    });
+}
+
+// General Store
+if (document.URL.includes("generalstore.phtml")) {
+    $("td:contains('Cost'):not(:has('td'))").find("strong").each(function (index, element) {
+        $(element).after(makelinks($(element).text()));
     });
 }
 
