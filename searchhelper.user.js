@@ -195,6 +195,7 @@ jQuery.fn.justtext = function () {
  Illusen/Jhudora
  Employment Agency
  Faerie Quest Page
+ Your Shop's Sales History
 */
 
 br = "<br>";
@@ -401,6 +402,17 @@ if (document.URL.includes("generalstore.phtml")) {
 if (document.URL.includes("hiddentower938.phtml")) {
     $(".content table").find("b:not([style*='red;'])").each(function (index, element) {
         $(element).after(makelinks($(element).text()));
+    });
+}
+
+// Your Shop's Sales History
+if (document.URL.includes("type=sales")) {
+    $('[value="Clear Sales History"]').parent().parent().parent().parent().find('tr').each(function (index, element) {
+        // make sure it's not the header or footer of this table
+        let cell = $(element).find("td").eq(1);
+        if (cell.attr('bgcolor') === "#ffffcc") {
+            $(cell).append(makelinks($(cell).text()));
+        }
     });
 }
 
