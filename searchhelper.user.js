@@ -30,29 +30,32 @@
 // @match      http://www.neopets.com/faerieland/hiddentower938.phtml
 // ==/UserScript==
 
-const imgsize = 20; // for the search images
+const imgSize = 20; // for the search images
 
-$("<style type='text/css'>.searchimg { cursor: pointer; height: " + imgsize + "px !important; width: " + imgsize + "px !important;</style>").appendTo("head");
+$("<style type='text/css'>.searchimg { cursor: pointer; height: " + imgSize + "px !important; width: " + imgSize + "px !important; } .search-helper { margin-top: 0; margin-bottom: 0; }</style>").appendTo("head");
 
 jQuery.fn.exists = function () {
     return this.length > 0;
 };
 
+// if the active pet dropdown image is there, we're in beta
+const isBeta = $("[class^='nav-pet-menu-icon']").exists();
+
 const linkmap = { // for urls and images for each search type
     ssw: {
-        "img": "http://images.neopets.com/shopkeepers/super_shopwizard.gif"
+        "img": "http://images.neopets.com/premium/shopwizard/ssw-icon.svg"
     },
     sw: {
         "url": "http://www.neopets.com/market.phtml?type=wizard&string=%s",
-        "img": "http://images.neopets.com/shopkeepers/shopwizard.gif"
+        "img": "http://images.neopets.com/themes/h5/basic/images/shopwizard-icon.png"
     },
     tp: {
         "url": "http://www.neopets.com/island/tradingpost.phtml?type=browse&criteria=item_exact&search_string=%s",
-        "img": "http://images.neopets.com/new_shopkeepers/29.gif"
+        "img": "http://images.neopets.com/themes/h5/basic/images/tradingpost-icon.png"
     },
     au: {
         "url": "http://www.neopets.com/genie.phtml?type=process_genie&criteria=exact&auctiongenie=%s",
-        "img": "http://images.neopets.com/shopkeepers/auctiongenie.gif"
+        "img": "http://images.neopets.com/themes/h5/basic/images/auction-icon.png"
     },
     sdb: {
         "url": "http://www.neopets.com/safetydeposit.phtml?obj_name=%s&category=0",
@@ -71,50 +74,33 @@ const linkmap = { // for urls and images for each search type
     }
 };
 
+// add the correct SW page if beta or not
+if (isBeta) {
+    linkmap.sw.url = "http://www.neopets.com/shops/wizard.phtml?string=%s";
+}
+
 // user has premium toolbar
-premium = $("#sswmenu .imgmenu").exists();
-
-function getQueryParams(qs) {
-    qs = qs.split("+").join(" ");
-    var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
-    while (tokens = re.exec(qs)) {
-        params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
-    }
-    return params;
+let premium = false;
+if (isBeta) {
+    premium = $("[class^='navsub-ssw-icon']").exists();
+} else {
+    premium = $("#sswmenu .imgmenu").exists();
 }
-
-function sswlink(item) {
-    // the only different one because it doesn't use a URL
-    return "<img item='" + item + "' class='sswstuff searchimg' src='" + linkmap.ssw.img + "'>";
-}
-
-function sswopen(item) {
-    if ($(".sswdrop").hasClass("panel_hidden")) {
-        $("#sswmenu .imgmenu").click();
-    }
-
-    if ($("#ssw-tabs-1").hasClass("ui-tabs-hide")) {
-        $('#ssw-tabs').tabs('select', 0);
-    }
-
-    $("#ssw-criteria").val("exact");
-
-    $("#searchstr").val(item);
-}
-
-$(".sswstuff").live("click", function () {
-    sswopen($(this).attr("item"));
-});
 
 function combiner(item, url, image) {
     url = url.replace("%s", item); // javascript needs sprintf.
     return "<a tabindex='-1' target='_blank' href='" + url + "'><img src='" + image + "' class='searchimg'></a>";
 }
 
+function sswlink(item) {
+    // the only different one because it doesn't use a URL
+    return "<img item='" + item + "' class='ssw-helper searchimg' src='" + linkmap.ssw.img + "'>";
+}
+
 // overall linker thing
 function makelinks(item, extras) {
     // extras is an object that can only have boolean of 'cash' and 'wearable' (for now) | and a string/int number 'itemid' (only needed for wearable being true)
-    let links = document.URL.includes("/island/tradingpost.phtml") ? " " : "<br>";
+    let links = "";
 
     item = $.trim(item);
     if (typeof extras === "undefined") {
@@ -169,255 +155,328 @@ function makelinks(item, extras) {
         links += combiner(item, link, linkmap.dti.img);
     }
 
-    return links;
+    const helper = $("<p class='search-helper'>" + links + "</p>");
+
+    // TODO: remove when TP is converted (hopefully)
+    // because of how ugly this makes the TP, let's inline it
+    let isOnTP = document.URL.includes("/island/tradingpost.phtml");
+    if (isOnTP) {
+        helper.css("display", "inline-block").css("margin-left", "4px");
+    }
+
+    console.log(helper);
+
+    return helper;
 }
 
 jQuery.fn.justtext = function () {
     return $(this).clone().children().remove().end().text();
 };
 
-//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// I don't really approve of doing the code this way, but in an effort to save as few headaches as possible
+// for the countless people who may use this, it's easier to just put beta & non-beta into one file.
+// As pages are converted, they will be removed from the non-beta half of the following if-statement, as TNT
+// mentioned in their end-of-flash update that beta pages will be the default when those pages are done.
+// That said, the point of no return starts here. May Sloth have mercy on us.
 
-/*
- Adds the search icons under things in:
- Inventory
- SDB
- Closet
- Auction Bidding Page
- Your Shop Price Page
- Coincidence
- MI Training School
- KI Training School
- Snow Faerie
- Esophagor
- Edna Quest
- Kitchen Quest
- Illusen/Jhudora
- Employment Agency
- Faerie Quest Page
- Your Shop's Sales History
-*/
+if (isBeta) {
+    /*
+     Adds the search icons under things in:
+     Inventory
+     Main Shops
+    */
 
-br = "<br>";
-hr = "<hr>";
-
-// Main Shops
-if (document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
-    $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
-        $(v).after(makelinks($(v).text()) + br);
-    });
-}
-
-// Igloo Garage
-if (document.URL.includes("/winter/igloo2.phtml")) {
-    $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
-        $(v).after(makelinks($(v).text()) + br);
-    });
-}
-
-// Trading Post
-if (document.URL.includes("/island/tradingpost.phtml")) {
-    $("img[src*='/items/']").each(function (k, v) {
-        $(this.nextSibling).after(makelinks($(this)[0].nextSibling.nodeValue) + br);
-    });
-}
-
-// Hospital
-if (document.URL.includes("/hospital.phtml")) {
-    $("img[src*='/items/']").parent().prev().find("b").each(function (k, v) {
-        $(v).after(makelinks($(v).text()) + br).before(br);
-        $(v).parent().width(150);
-    });
-}
-
-// Redeeming Cash
-if (document.URL.includes("process_cash_object")) {
-    extras = {cash: true, wearable: true};
-    $("img[src*='/items/']").parent().find("b").each(function (k, v) {
-        $(v).before(br).after(makelinks($(v).text(), extras) + br);
-    });
-}
-
-// Auctions
-if (document.URL.includes("auction_id")) {
-    nameb = $("b:contains('owned by')");
-    fixname = nameb.html();
-    fixname = fixname.substr(0, fixname.indexOf(" (own")); // remove "owned by..."
-    nameb.parent().find("img").after(makelinks(fixname));
-}
-
-// Inventory
-if (document.URL.includes("inventory")) {
-    $("img[src*='/items/']").each(function (k, v) {
-        let $nametd = $(v).parent().parent();
-
-        let extras = {cash: $(v).hasClass("otherItem"), wearable: $nametd.hasClass("wearable"), itemid: -1};
-
-        if ($nametd.find("hr").exists()) {
-            extras.tradeable = !$nametd.find("span:contains('(no trade)')").exists();
-            $nametd.find("hr").before(makelinks($nametd.justtext(), extras));
-        } else {
-            $nametd.append(makelinks($nametd.justtext(), extras));
-        }
-    });
-}
-
-// SDB & Closet
-// only downside is not knowing if something is NC if it's in the closet. Oh well, no way to know.
-if (document.URL.includes("safetydeposit") || document.URL.includes("closet")) {
-    $("img[src*='/items/']").each(function (k, v) {
-        let id = $(v).parent().parent().find("td").eq(5).find("input").attr("name").match(/\d+/g)[0];
-
-        let iswearable = $(v).parent().parent().find("td").eq(1).text().includes("(wearable)");
-        if (document.URL.includes("closet")) { // because it'll always be wearable if it's in the closet...
-            iswearable = true;
-        }
-        let category = $(v).parent().parent().find("td").eq(3);
-        let extras = {cash: (category.text().trim() == "Neocash"), wearable: iswearable, itemid: id};
-        let nametd = $(v).parent().parent().find("td").eq(1);
-        nametd.find("b").eq(0).after(makelinks(nametd.find("b").eq(0).justtext(), extras));
-    });
-}
-
-// Your Shop
-if (document.URL.includes("type=your") || document.URL.includes("market_your") || $("[name=subbynext]").length == 2) { // because pressing the Previous/Next 30 is a POST and has nothing of value in the URL
-    $("img[src*='/items/']").each(function (k, v) {
-        let nametd = $(v).parent().parent().find("td").eq(0);
-        let itemname = nametd.text();
-        itemname = itemname.replace(nametd.find(".medText").text(), "");
-
-        nametd.find("b").eq(0).after(makelinks(itemname));
-    });
-}
-
-// Coincidence
-if (document.URL.includes("coincidence")) {
-    $("img[src*='/items/']").each(function (k, v) {
-        nametd = $(v).parent();
-        nametd.find("b").eq(0).after(makelinks(nametd.justtext()));
-    });
-}
-
-// MI Training
-if (document.URL.includes("/island/training.phtml?type=status")) {
-    $("img[src*='/items/']").each(function (k, v) {
-        $(v).after(makelinks($(v).prev().text()) + "<hr>");
-    });
-}
-
-// Secret Training
-if (document.URL.includes("/island/fight_training.phtml?type=status")) {
-    $("img[src*='/items/']").each(function (k, v) {
-        $(v).after(makelinks($(v).prev().text()) + "<hr>");
-    });
-}
-
-// KI Training
-if (document.URL.includes("/pirates/academy.phtml?type=status")) {
-    $("img[src*='/items/']").each(function (k, v) {
-        let nametd = $(v).parent();
-        let itemname = nametd.parent().find("td > b").eq(0).text();
-        nametd.parent().find("td > b").eq(0).after(makelinks(itemname));
-    });
-}
-
-// Snow Faerie
-// essentially same as kitchen. woo, lazy!
-if (document.URL.includes("snowfaerie")) {
-    addhr = (document.URL.includes("snowfaerie2") === false);
-    hr = addhr ? "<hr>" : "";
-    $("img[src*='/items/']").parent().find("b").each(function (k, v) {
-        $(v).after(makelinks($(v).text()) + hr);
-    });
-}
-
-// Esophagor
-if (document.URL.includes("esophagor")) {
-    $("img[src*='/items/']").each(function (k, v) {
-        let itemname = $(v).parent().find("b");
-        itemname.after(makelinks(itemname.text()));
-    });
-}
-
-// Edna
-if (document.URL.includes("witchtower")) {
-    $("img[src*='/items/']").each(function (k, v) {
-        let itemname = $(v).parent().find("b");
-        itemname.after(makelinks(itemname.text()));
-    });
-}
-
-// Kitchen
-if (document.URL.includes("kitchen")) {
-    addhr = (document.URL.includes("kitchen2") === false);
-    hr = addhr ? "<hr>" : "";
-    $("img[src*='/items/']").parent().find("b").each(function (k, v) {
-        $(v).after(makelinks($(v).text()) + hr);
-    });
-}
-
-// illusen & jhudora
-if ($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").exists()) {
-    itemname = $("center:contains('Where is my') > b").text();
-    $("center:contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
-}
-
-// employment agency
-if (document.URL.includes("employment")) {
-    if (document.URL.includes("type=jobs")) {
-        $("b:contains('Find')").each(function (k, v) {
-            let itemname = $(v).parent().clone().find("b").remove().end().html().split("<br>")[0];
-            $($(v)[0].nextSibling).after(makelinks(itemname));
+    // Main Shops
+    if (document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
+        $(".item-name").each(function (k, v) {
+            $(v).after(makelinks($(v).text()));
         });
     }
-    if (document.URL.includes("job_id")) {
-        $("b:contains('Find')").eq(0).after(makelinks($("b:contains('Find')").eq(0).justtext()));
+
+    // Inventory
+    if (document.URL.includes("inventory")) {
+        // the inventory system is more flexible than it used to be, so we have to do this a little differently
+        $(document).ajaxSuccess(
+            function () {
+                $(".item-name").each(function (index, element) {
+                    // this will add more and more if you do things like SSW searching, so check first
+                    if ($(element).parent().find(".search-helper").length === 0) {
+                        let extras = {
+                            cash: document.getElementById("invDisplay").dataset.type === "nc",
+                            wearable: $(element).parent().find(":contains('wearable')").length > 0,
+                            tradeable: $(element).parent().find(":contains('(no trade)')").length === 0,
+                            itemid: -1
+                        };
+                        $(element).after(makelinks($(element).text(), extras));
+                    }
+                });
+            }
+        );
+    }
+} else {
+    /*
+     Adds the search icons under things in:
+     Inventory
+     SDB
+     Closet
+     Auction Bidding Page
+     Your Shop Price Page
+     Coincidence
+     MI Training School
+     KI Training School
+     Snow Faerie
+     Esophagor
+     Edna Quest
+     Kitchen Quest
+     Illusen/Jhudora
+     Employment Agency
+     Faerie Quest Page
+     Your Shop's Sales History
+    */
+
+    // Main Shops
+    if (document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
+        $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
+            $(v).after(makelinks($(v).text()));
+        });
+    }
+
+    // Igloo Garage
+    if (document.URL.includes("/winter/igloo2.phtml")) {
+        $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
+            $(v).after(makelinks($(v).text()));
+        });
+    }
+
+    // Trading Post
+    if (document.URL.includes("/island/tradingpost.phtml")) {
+        $("img[src*='/items/']").each(function (k, v) {
+            $(this.nextSibling).after(makelinks($(this)[0].nextSibling.nodeValue));
+        });
+    }
+
+    // Hospital
+    if (document.URL.includes("/hospital.phtml")) {
+        $("img[src*='/items/']").parent().prev().find("b").each(function (k, v) {
+            $(v).after(makelinks($(v).text())).before("<br>");
+            $(v).parent().width(150);
+        });
+    }
+
+    // Redeeming Cash
+    if (document.URL.includes("process_cash_object")) {
+        extras = {cash: true, wearable: true};
+        $("img[src*='/items/']").parent().find("b").each(function (k, v) {
+            $(v).before("<br>").after(makelinks($(v).text(), extras));
+        });
+    }
+
+    // Auctions
+    if (document.URL.includes("auction_id")) {
+        nameb = $("b:contains('owned by')");
+        fixname = nameb.html();
+        fixname = fixname.substr(0, fixname.indexOf(" (own")); // remove "owned by..."
+        nameb.parent().find("img").after(makelinks(fixname));
+    }
+
+    // Inventory
+    if (document.URL.includes("inventory")) {
+        $("img[src*='/items/']").each(function (k, v) {
+            let $nametd = $(v).parent().parent();
+
+            let extras = {cash: $(v).hasClass("otherItem"), wearable: $nametd.hasClass("wearable"), itemid: -1};
+
+            if ($nametd.find("hr").exists()) {
+                extras.tradeable = !$nametd.find("span:contains('(no trade)')").exists();
+                $nametd.find("hr").before(makelinks($nametd.justtext(), extras));
+            } else {
+                $nametd.append(makelinks($nametd.justtext(), extras));
+            }
+        });
+    }
+
+    // SDB & Closet
+    // only downside is not knowing if something is NC if it's in the closet. Oh well, no way to know.
+    if (document.URL.includes("safetydeposit") || document.URL.includes("closet")) {
+        $("img[src*='/items/']").each(function (k, v) {
+            let id = $(v).parent().parent().find("td").eq(5).find("input").attr("name").match(/\d+/g)[0];
+
+            let iswearable = $(v).parent().parent().find("td").eq(1).text().includes("(wearable)");
+            if (document.URL.includes("closet")) { // because it'll always be wearable if it's in the closet...
+                iswearable = true;
+            }
+            let category = $(v).parent().parent().find("td").eq(3);
+            let extras = {cash: (category.text().trim() === "Neocash"), wearable: iswearable, itemid: id};
+            let nametd = $(v).parent().parent().find("td").eq(1);
+            nametd.find("b").eq(0).after(makelinks(nametd.find("b").eq(0).justtext(), extras));
+        });
+    }
+
+    // Your Shop
+    if (document.URL.includes("type=your") || document.URL.includes("market_your") || $("[name=subbynext]").length === 2) { // because pressing the Previous/Next 30 is a POST and has nothing of value in the URL
+        $("img[src*='/items/']").each(function (k, v) {
+            let nametd = $(v).parent().parent().find("td").eq(0);
+            let itemname = nametd.text();
+            itemname = itemname.replace(nametd.find(".medText").text(), "");
+
+            nametd.find("b").eq(0).after(makelinks(itemname));
+        });
+    }
+
+    // Coincidence
+    if (document.URL.includes("space/coincidence")) {
+        $("img[src*='/items/']").each(function (k, v) {
+            nametd = $(v).parent();
+            nametd.find("b").eq(0).after(makelinks(nametd.justtext()));
+        });
+    }
+
+    // MI Training
+    if (document.URL.includes("/island/training.phtml?type=status")) {
+        $("img[src*='/items/']").each(function (k, v) {
+            $(v).after(makelinks($(v).prev().text()));
+        });
+    }
+
+    // Secret Training
+    if (document.URL.includes("/island/fight_training.phtml?type=status")) {
+        $("img[src*='/items/']").each(function (k, v) {
+            $(v).after(makelinks($(v).prev().text()));
+        });
+    }
+
+    // KI Training
+    if (document.URL.includes("/pirates/academy.phtml?type=status")) {
+        $("img[src*='/items/']").each(function (k, v) {
+            let nametd = $(v).parent();
+            let itemname = nametd.parent().find("td > b").eq(0).text();
+            nametd.parent().find("td > b").eq(0).after(makelinks(itemname));
+        });
+    }
+
+    // Snow Faerie
+    // essentially same as kitchen. woo, lazy!
+    if (document.URL.includes("winter/snowfaerie")) {
+        addhr = (document.URL.includes("snowfaerie2") === false);
+        $("img[src*='/items/']").parent().find("b").each(function (k, v) {
+            $(v).after(makelinks($(v).text()));
+        });
+    }
+
+    // Esophagor
+    if (document.URL.includes("halloween/esophagor")) {
+        $("img[src*='/items/']").each(function (k, v) {
+            let itemname = $(v).parent().find("b");
+            itemname.after(makelinks(itemname.text()));
+        });
+    }
+
+    // Edna
+    if (document.URL.includes("halloween/witchtower")) {
+        $("img[src*='/items/']").each(function (k, v) {
+            let itemname = $(v).parent().find("b");
+            itemname.after(makelinks(itemname.text()));
+        });
+    }
+
+    // Kitchen
+    if (document.URL.includes("island/kitchen")) {
+        $("img[src*='/items/']").parent().find("b").each(function (k, v) {
+            $(v).after(makelinks($(v).text()));
+        });
+    }
+
+    // illusen & jhudora
+    if ($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").exists()) {
+        itemname = $("center:contains('Where is my') > b").text();
+        $("center:contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
+    }
+
+    // employment agency
+    if (document.URL.includes("employment")) {
+        if (document.URL.includes("type=jobs")) {
+            $("b:contains('Find')").each(function (k, v) {
+                let itemname = $(v).parent().clone().find("b").remove().end().html().split("<br>")[0];
+                $($(v)[0].nextSibling).after(makelinks(itemname));
+            });
+        }
+        if (document.URL.includes("job_id")) {
+            $("b:contains('Find')").eq(0).after(makelinks($("b:contains('Find')").eq(0).justtext()));
+        }
+    }
+
+    // Faerie Quests
+    if (document.URL.includes("quests.phtml")) {
+        $("img[src*='/items/']").each(function (k, v) {
+            itemname = $(v).parent().find("b");
+            itemname.after(makelinks(itemname.text()));
+        });
+    }
+
+    // Kadoatery
+    if (document.URL.includes("games/kadoatery")) {
+        $("td:contains('You should give it'):not(:contains('Thanks,'))").each(function (k, v) {
+            itemname = $(v).find("strong").last();
+            itemname.after(makelinks(itemname.text()));
+        });
+    }
+
+    // General Store
+    if (document.URL.includes("generalstore.phtml")) {
+        $("td:contains('Cost'):not(:has('td'))").find("strong").each(function (index, element) {
+            $(element).after(makelinks($(element).text()));
+        });
+    }
+
+    // Hidden Tower
+    if (document.URL.includes("hiddentower938.phtml")) {
+        $(".content table").find("b:not([style*='red;'])").each(function (index, element) {
+            $(element).after(makelinks($(element).text()));
+        });
+    }
+
+    // Your Shop's Sales History
+    if (document.URL.includes("market.phtml?type=sales")) {
+        $('[value="Clear Sales History"]').parent().parent().parent().parent().find('tr').each(function (index, element) {
+            // make sure it's not the header or footer of this table
+            let cell = $(element).find("td").eq(1);
+            if (cell.attr('bgcolor') === "#ffffcc") {
+                $(cell).append(makelinks($(cell).text()));
+            }
+        });
+    }
+
+    // Shop Wiz Auto-Exact
+    if (document.URL.includes("type=wizard&string=")) {
+        $("[name='shopwizard']").val(getQueryParams(document.location.search).string);
+        $("[name='criteria']").val("exact");
+    }
+
+    function getQueryParams(qs) {
+        qs = qs.split("+").join(" ");
+        let params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+        return params;
+    }
+
+    function sswopen(item) {
+        if ($(".sswdrop").hasClass("panel_hidden")) {
+            $("#sswmenu .imgmenu").click();
+        }
+
+        if ($("#ssw-tabs-1").hasClass("ui-tabs-hide")) {
+            $('#ssw-tabs').tabs('select', 0);
+        }
+
+        $("#ssw-criteria").val("exact");
+
+        $("#searchstr").val(item);
     }
 }
 
-// Faerie Quests
-if (document.URL.includes("quests")) {
-    $("img[src*='/items/']").each(function (k, v) {
-        itemname = $(v).parent().find("b");
-        itemname.after(makelinks(itemname.text()));
-    });
-}
-
-// Kadoatery
-if (document.URL.includes("kadoatery")) {
-    $("td:contains('You should give it'):not(:contains('Thanks,'))").each(function (k, v) {
-        itemname = $(v).find("strong").last();
-        itemname.after(makelinks(itemname.text()));
-    });
-}
-
-// General Store
-if (document.URL.includes("generalstore.phtml")) {
-    $("td:contains('Cost'):not(:has('td'))").find("strong").each(function (index, element) {
-        $(element).after(makelinks($(element).text()));
-    });
-}
-
-// Hidden Tower
-if (document.URL.includes("hiddentower938.phtml")) {
-    $(".content table").find("b:not([style*='red;'])").each(function (index, element) {
-        $(element).after(makelinks($(element).text()));
-    });
-}
-
-// Your Shop's Sales History
-if (document.URL.includes("type=sales")) {
-    $('[value="Clear Sales History"]').parent().parent().parent().parent().find('tr').each(function (index, element) {
-        // make sure it's not the header or footer of this table
-        let cell = $(element).find("td").eq(1);
-        if (cell.attr('bgcolor') === "#ffffcc") {
-            $(cell).append(makelinks($(cell).text()));
-        }
-    });
-}
-
-// Shop Wiz Auto-Exact
-if (document.URL.includes("type=wizard&string=")) {
-    $("[name='shopwizard']").val(getQueryParams(document.location.search).string);
-    $("[name='criteria']").val("exact");
-}
+$("body").on("click", ".ssw-helper", function () {
+    sswopen($(this).attr("item"));
+});
