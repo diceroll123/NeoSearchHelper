@@ -15,7 +15,7 @@
 // @match      http://www.neopets.com/halloween/esophagor*.phtml
 // @match      http://www.neopets.com/faerieland/employ/employment.phtml*
 // @match      http://www.neopets.com/closet.phtml*
-// @match      http://www.neopets.com/auctions.phtml?*
+// @match      http://www.neopets.com/auctions.phtml*
 // @match      http://www.neopets.com/winter/snowfaerie*.phtml
 // @match      http://www.neopets.com/quests.phtml
 // @match      http://www.neopets.com/games/kadoatery/index.phtml
