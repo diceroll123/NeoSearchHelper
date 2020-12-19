@@ -15,7 +15,7 @@
 // @match      http://www.neopets.com/halloween/esophagor*.phtml
 // @match      http://www.neopets.com/faerieland/employ/employment.phtml*
 // @match      http://www.neopets.com/closet.phtml*
-// @match      http://www.neopets.com/auctions.phtml?*auction_id=*
+// @match      http://www.neopets.com/auctions.phtml*
 // @match      http://www.neopets.com/winter/snowfaerie*.phtml
 // @match      http://www.neopets.com/quests.phtml
 // @match      http://www.neopets.com/games/kadoatery/index.phtml
@@ -290,6 +290,12 @@ if (isBeta) {
         fixname = nameb.html();
         fixname = fixname.substr(0, fixname.indexOf(" (own")); // remove "owned by..."
         nameb.parent().find("img").after(makelinks(fixname));
+    }
+    if (document.URL.includes("auctions.phtml")) {
+        $("a[href*='?type=bids&auction_id=']:not(:has('img'))").each(function (index, element) {
+            const itemname = $(element).text();
+            $(element).after(makelinks(itemname));
+        })
     }
 
     // Inventory
