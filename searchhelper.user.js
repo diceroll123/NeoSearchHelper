@@ -27,6 +27,7 @@
 // @match      http://www.neopets.com/island/tradingpost.phtml*
 // @match      http://www.neopets.com/generalstore.phtml*
 // @match      http://www.neopets.com/faerieland/hiddentower938.phtml
+// @match      http://www.neopets.com/shops/wizard.phtml*
 // ==/UserScript==
 
 const imgSize = 20; // for the search images
@@ -205,6 +206,11 @@ if (isBeta) {
                 });
             }
         );
+    }
+
+    // Shop Wiz Auto-Exact
+    if (document.URL.includes("wizard.phtml?string=")) {
+        $("#criteria").val("exact");
     }
 
     function sswopen(item) {
