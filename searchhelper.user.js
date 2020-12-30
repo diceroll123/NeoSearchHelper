@@ -164,8 +164,6 @@ function makelinks(item, extras) {
         helper.css("display", "inline-block").css("margin-left", "4px");
     }
 
-    console.log(helper);
-
     return helper;
 }
 
@@ -287,7 +285,7 @@ if (isBeta) {
     // Auctions
     if (document.URL.includes("auction_id")) {
         nameb = $("b:contains('owned by')");
-        fixname = nameb.html();
+        let fixname = nameb.html();
         fixname = fixname.substr(0, fixname.indexOf(" (own")); // remove "owned by..."
         nameb.parent().find("img").after(makelinks(fixname));
     }
@@ -407,7 +405,7 @@ if (isBeta) {
 
     // illusen & jhudora
     if ($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").exists()) {
-        itemname = $("center:contains('Where is my') > b").text();
+        let itemname = $("center:contains('Where is my') > b").text();
         $("center:contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
     }
 
@@ -427,7 +425,7 @@ if (isBeta) {
     // Faerie Quests
     if (document.URL.includes("quests.phtml")) {
         $("img[src*='/items/']").each(function (k, v) {
-            itemname = $(v).parent().find("b");
+            let itemname = $(v).parent().find("b");
             itemname.after(makelinks(itemname.text()));
         });
     }
@@ -435,7 +433,7 @@ if (isBeta) {
     // Kadoatery
     if (document.URL.includes("games/kadoatery")) {
         $("td:contains('You should give it'):not(:contains('Thanks,'))").each(function (k, v) {
-            itemname = $(v).find("strong").last();
+            let itemname = $(v).find("strong").last();
             itemname.after(makelinks(itemname.text()));
         });
     }
