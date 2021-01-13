@@ -28,7 +28,7 @@
 // @match      http://www.neopets.com/island/tradingpost.phtml*
 // @match      http://www.neopets.com/generalstore.phtml*
 // @match      http://www.neopets.com/faerieland/hiddentower938.phtml
-// @match      http://www.neopets.com/dome/neopets.phtml
+// @match      http://www.neopets.com/dome/neopets.phtml*
 // @match      http://www.neopets.com/shops/wizard.phtml*
 // ==/UserScript==
 
@@ -487,7 +487,7 @@ if (isBeta) {
                 $(makelinks(itemname)).appendTo($(element));
             }
         });
-        $(".equipTable").css({"overflow" : "scroll"});
+        $(".equipTable").css({"overflow-y" : "scroll"});
     }
 
     function sswopen(item) {
