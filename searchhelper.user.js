@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name       Neopets - Search Helper
-// @version    1.0.7
+// @version    1.0.8
 // @match      http://www.neopets.com/halloween/witchtower*.phtml
 // @match      http://www.neopets.com/island/kitchen*.phtml
 // @match      http://www.neopets.com/medieval/earthfaerie.phtml*
