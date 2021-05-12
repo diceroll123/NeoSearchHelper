@@ -90,7 +90,7 @@ if (isBeta) {
 }
 
 function combiner(item, url, image) {
-    url = url.replace("%s", item); // javascript needs sprintf.
+    url = url.replace("%s", item);
     return "<a tabindex='-1' target='_blank' href='" + url + "'><img src='" + image + "' class='searchimg'></a>";
 }
 
@@ -114,8 +114,18 @@ function makelinks(item, extras) {
     }
 
     const sswurl = sswlink(item);
-    item = item.replace(/&/g, "%26");
-    item = item.replace(/ /g, '+');
+    item = item.replaceAll("!", "%21")
+               .replaceAll("#", "%23")
+               .replaceAll("&", "%26")
+               .replaceAll("(", "%28")
+               .replaceAll(")", "%29")
+               .replaceAll("*", "%2A")
+               .replaceAll("+", "%2B")
+               .replaceAll(",", "%2C")
+               .replaceAll("/", "%2F")
+               .replaceAll(":", "%3A")
+               .replaceAll("?", "%3F")
+               .replaceAll(" ", "+");
 
     if (extras.cash === false && extras.tradeable === true) {
         if (document.URL.includes("quests.phtml") === false) { // doesn't show either SW if you're on a quest
