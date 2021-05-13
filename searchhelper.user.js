@@ -203,8 +203,8 @@ jQuery.fn.justtext = function () {
 if (isBeta) {
     /*
      Adds the search icons under things in:
-     Inventory
      Main Shops
+     Inventory
      Kitchen Quest
     */
 
@@ -234,8 +234,8 @@ if (isBeta) {
 
     // Main Shops
     if (document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
-        $(".item-name").each(function (k, v) {
-            $(v).after(makelinks($(v).text()));
+        $(".item-name").each(function (index, element) {
+            $(element).after(makelinks($(element).text()));
         });
     }
 
@@ -246,7 +246,7 @@ if (isBeta) {
             function () {
                 $(".item-name").each(function (index, element) {
                     // this will add more and more if you do things like SSW searching, so check first
-                    if ($(element).parent().find(".search-helper").length === 0) {
+                    if (!hasSearchHelper(element)) {
                         let extras = {
                             cash: document.getElementById("invDisplay").dataset.type === "nc",
                             wearable: $(element).parent().find(":contains('wearable')").length > 0,
