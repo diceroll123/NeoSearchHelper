@@ -3,6 +3,7 @@
 // @version    1.0.9
 // @match      http://www.neopets.com/halloween/witchtower*.phtml
 // @match      http://www.neopets.com/island/kitchen.phtml
+// @match      http://www.neopets.com/island/kitchen2.phtml
 // @match      http://www.neopets.com/medieval/earthfaerie.phtml*
 // @match      http://www.neopets.com/faerieland/darkfaerie.phtml*
 // @match      http://www.neopets.com/safetydeposit.phtml*
@@ -18,6 +19,7 @@
 // @match      http://www.neopets.com/auctions.phtml*
 // @match      http://www.neopets.com/genie.phtml*
 // @match      http://www.neopets.com/winter/snowfaerie.phtml
+// @match      http://www.neopets.com/winter/snowfaerie2.phtml
 // @match      http://www.neopets.com/quests.phtml
 // @match      http://www.neopets.com/games/kadoatery/index.phtml
 // @match      http://www.neopets.com/games/kadoatery/*
@@ -308,8 +310,11 @@ if (isBeta) {
      Coincidence
      MI Training School
      KI Training School
+     Snow Faerie
      Esophagor
      Edna Quest
+     Kitchen Quest
+     Illusen/Jhudora
      Employment Agency
      Faerie Quest Page
      Your Shop's Sales History
@@ -441,6 +446,15 @@ if (isBeta) {
         });
     }
 
+    // Snow Faerie
+    // essentially same as kitchen. woo, lazy!
+    if (document.URL.includes("winter/snowfaerie")) {
+        addhr = (document.URL.includes("snowfaerie2") === false);
+        $("img[src*='/items/']").parent().find("b").each(function (k, v) {
+            $(v).after(makelinks($(v).text()));
+        });
+    }
+
     // Esophagor
     if (document.URL.includes("halloween/esophagor")) {
         $("img[src*='/items/']").each(function (k, v) {
@@ -455,6 +469,19 @@ if (isBeta) {
             let itemname = $(v).parent().find("b");
             itemname.after(makelinks(itemname.text()));
         });
+    }
+
+    // Kitchen
+    if (document.URL.includes("island/kitchen")) {
+        $("img[src*='/items/']").parent().find("b").each(function (k, v) {
+            $(v).after(makelinks($(v).text()));
+        });
+    }
+
+    // illusen & jhudora
+    if ($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").exists()) {
+        let itemname = $("center:contains('Where is my') > b").text();
+        $("center:contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
     }
 
     // employment agency
