@@ -278,7 +278,7 @@ if (isBeta) {
     // Illusen & Jhudora
     if ($(".faerie-img").exists()) {
         let itemname = $(":contains('Where is my') > b").text();
-        $(":contains('Where is my')").parent().parent().find("img[src*='/items/']").after(makelinks(itemname));
+        $(":contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
     }
 
     // Shop Wiz Auto-Exact
