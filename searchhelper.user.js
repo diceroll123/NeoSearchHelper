@@ -245,7 +245,7 @@ if (isBeta) {
     }
 
     // Main Shops
-    if (document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
+    if (inURL("objects.phtml") || inURL("type=shop")) {
         $(".item-img + .item-name").each(function (index, element) {
             $(element).after(makelinks($(element).text()));
         });
