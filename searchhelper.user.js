@@ -2,7 +2,7 @@
 // @name       Neopets - Search Helper
 // @version    1.0.8
 // @match      http://www.neopets.com/halloween/witchtower*.phtml
-// @match      http://www.neopets.com/island/kitchen*.phtml
+// @match      http://www.neopets.com/island/kitchen.phtml
 // @match      http://www.neopets.com/medieval/earthfaerie.phtml*
 // @match      http://www.neopets.com/faerieland/darkfaerie.phtml*
 // @match      http://www.neopets.com/safetydeposit.phtml*
@@ -205,7 +205,32 @@ if (isBeta) {
      Adds the search icons under things in:
      Inventory
      Main Shops
+     Kitchen Quest
     */
+
+    // Common functions go here
+    function hasSearchHelper(element) {
+        // this will be used in ajaxSuccess handlers, as to not flood the page after hot-reloads
+        return $(element).parent().find(".search-helper").length !== 0;
+    }
+
+    function genericQuest() {
+        // so far, we know this works on:
+        // Kitchen Quests
+
+        // due to inconsistencies in the ajax requests, we will attempt to do two different kinds of search helper adds
+        $("img[src*='/items/']").parent().find("b").each(function (index, element) {
+            if (!hasSearchHelper(element)) {
+                $(element).after(makelinks($(element).text()));
+            }
+        });
+
+        $(".item-name").find("b").each(function (index, element) {
+            if (!hasSearchHelper(element)) {
+                $(element).after(makelinks($(element).text()));
+            }
+        });
+    }
 
     // Main Shops
     if (document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
@@ -233,6 +258,12 @@ if (isBeta) {
                 });
             }
         );
+    }
+
+    // Kitchen Quest
+    if (document.URL.includes("island/kitchen")) {
+        genericQuest();
+        $(document).ajaxSuccess(genericQuest);
     }
 
     // Shop Wiz Auto-Exact
@@ -265,7 +296,6 @@ if (isBeta) {
      Snow Faerie
      Esophagor
      Edna Quest
-     Kitchen Quest
      Illusen/Jhudora
      Employment Agency
      Faerie Quest Page
@@ -420,13 +450,6 @@ if (isBeta) {
         $("img[src*='/items/']").each(function (k, v) {
             let itemname = $(v).parent().find("b");
             itemname.after(makelinks(itemname.text()));
-        });
-    }
-
-    // Kitchen
-    if (document.URL.includes("island/kitchen")) {
-        $("img[src*='/items/']").parent().find("b").each(function (k, v) {
-            $(v).after(makelinks($(v).text()));
         });
     }
 
