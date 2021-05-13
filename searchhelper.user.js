@@ -219,13 +219,13 @@ if (isBeta) {
         // Kitchen Quests
 
         // due to inconsistencies in the ajax requests, we will attempt to do two different kinds of search helper adds
-        $("img[src*='/items/']").parent().find("b").each(function (index, element) {
+        $(".item-img + .item-name").find("b").each(function (index, element) {
             if (!hasSearchHelper(element)) {
                 $(element).after(makelinks($(element).text()));
             }
         });
 
-        $(".item-name").find("b").each(function (index, element) {
+        $("img[src*='/items/'] + br + p > b").each(function (index, element) {
             if (!hasSearchHelper(element)) {
                 $(element).after(makelinks($(element).text()));
             }
@@ -234,7 +234,7 @@ if (isBeta) {
 
     // Main Shops
     if (document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
-        $(".item-name").each(function (index, element) {
+        $(".item-img + .item-name").each(function (index, element) {
             $(element).after(makelinks($(element).text()));
         });
     }
@@ -244,7 +244,7 @@ if (isBeta) {
         // the inventory system is more flexible than it used to be, so we have to do this a little differently
         $(document).ajaxSuccess(
             function () {
-                $(".item-name").each(function (index, element) {
+                $(".item-img + .item-name").each(function (index, element) {
                     // this will add more and more if you do things like SSW searching, so check first
                     if (!hasSearchHelper(element)) {
                         let extras = {
