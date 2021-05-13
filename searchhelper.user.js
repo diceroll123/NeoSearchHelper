@@ -17,7 +17,7 @@
 // @match      http://www.neopets.com/closet.phtml*
 // @match      http://www.neopets.com/auctions.phtml*
 // @match      http://www.neopets.com/genie.phtml*
-// @match      http://www.neopets.com/winter/snowfaerie*.phtml
+// @match      http://www.neopets.com/winter/snowfaerie.phtml
 // @match      http://www.neopets.com/quests.phtml
 // @match      http://www.neopets.com/games/kadoatery/index.phtml
 // @match      http://www.neopets.com/games/kadoatery/*
@@ -206,6 +206,7 @@ if (isBeta) {
      Main Shops
      Inventory
      Kitchen Quest
+     Snow Faerie Quests
     */
 
     // Common functions go here
@@ -217,6 +218,7 @@ if (isBeta) {
     function genericQuest() {
         // so far, we know this works on:
         // Kitchen Quests
+        // Snow Faerie Quests
 
         // due to inconsistencies in the ajax requests, we will attempt to do two different kinds of search helper adds
         $(".item-img + .item-name").find("b").each(function (index, element) {
@@ -266,6 +268,12 @@ if (isBeta) {
         $(document).ajaxSuccess(genericQuest);
     }
 
+    // Snow Faerie
+    if (document.URL.includes("winter/snowfaerie")) {
+        genericQuest();
+        $(document).ajaxSuccess(genericQuest);
+    }
+
     // Shop Wiz Auto-Exact
     if (document.URL.includes("wizard.phtml?string=")) {
         $("#criteria").val("exact");
@@ -293,7 +301,6 @@ if (isBeta) {
      Coincidence
      MI Training School
      KI Training School
-     Snow Faerie
      Esophagor
      Edna Quest
      Illusen/Jhudora
@@ -425,15 +432,6 @@ if (isBeta) {
             let nametd = $(v).parent();
             let itemname = nametd.parent().find("td > b").eq(0).text();
             nametd.parent().find("td > b").eq(0).after(makelinks(itemname));
-        });
-    }
-
-    // Snow Faerie
-    // essentially same as kitchen. woo, lazy!
-    if (document.URL.includes("winter/snowfaerie")) {
-        addhr = (document.URL.includes("snowfaerie2") === false);
-        $("img[src*='/items/']").parent().find("b").each(function (k, v) {
-            $(v).after(makelinks($(v).text()));
         });
     }
 
