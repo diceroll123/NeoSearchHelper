@@ -108,6 +108,21 @@ function inURL(substr) {
     return document.URL.includes(substr);
 }
 
+function cleanItem(item) {
+    return item.replaceAll("!", "%21")
+               .replaceAll("#", "%23")
+               .replaceAll("&", "%26")
+               .replaceAll("(", "%28")
+               .replaceAll(")", "%29")
+               .replaceAll("*", "%2A")
+               .replaceAll("+", "%2B")
+               .replaceAll(",", "%2C")
+               .replaceAll("/", "%2F")
+               .replaceAll(":", "%3A")
+               .replaceAll("?", "%3F")
+               .replaceAll(" ", "+");
+}
+
 // overall linker thing
 function makelinks(item, extras) {
     // extras is an object that can only have boolean of 'cash' and 'wearable' (for now) | and a string/int number 'itemid' (only needed for wearable being true)
@@ -123,18 +138,7 @@ function makelinks(item, extras) {
     }
 
     const sswurl = sswlink(item);
-    item = item.replaceAll("!", "%21")
-               .replaceAll("#", "%23")
-               .replaceAll("&", "%26")
-               .replaceAll("(", "%28")
-               .replaceAll(")", "%29")
-               .replaceAll("*", "%2A")
-               .replaceAll("+", "%2B")
-               .replaceAll(",", "%2C")
-               .replaceAll("/", "%2F")
-               .replaceAll(":", "%3A")
-               .replaceAll("?", "%3F")
-               .replaceAll(" ", "+");
+    const name = cleanItem(item);
 
     if (extras.cash === false && extras.tradeable === true) {
         if (inURL("quests.phtml") === false) { // doesn't show either SW if you're on a quest
@@ -144,41 +148,43 @@ function makelinks(item, extras) {
             }
 
             // Regular SW
-            links += combiner(item, linkmap.sw.url, linkmap.sw.img);
+            links += combiner(name, linkmap.sw.url, linkmap.sw.img);
         }
 
         // TP
-        links += combiner(item, linkmap.tp.url, linkmap.tp.img);
+        links += combiner(name, linkmap.tp.url, linkmap.tp.img);
 
         // Auctions
-        links += combiner(item, linkmap.au.url, linkmap.au.img);
+        links += combiner(name, linkmap.au.url, linkmap.au.img);
     }
 
     // SDB
     if (inURL("safetydeposit") === false) {
-        links += combiner(item, linkmap.sdb.url, linkmap.sdb.img);
+        links += combiner(name, linkmap.sdb.url, linkmap.sdb.img);
     }
 
     // Closet
     if (extras.wearable && inURL("closet.phtml") === false) {
-        links += combiner(item, linkmap.closet.url, linkmap.closet.img);
+        links += combiner(name, linkmap.closet.url, linkmap.closet.img);
     }
 
     // JN items
-    links += combiner(item, linkmap.jni.url, linkmap.jni.img);
+    links += combiner(name, linkmap.jni.url, linkmap.jni.img);
 
     // Battlepedia
     if (inURL("dome")) {
-        links += combiner(item, linkmap.battlepedia.url, linkmap.battlepedia.img);
+        links += combiner(name, linkmap.battlepedia.url, linkmap.battlepedia.img);
     }
 
     // DTI
     if (extras.wearable) {
-        let link = "http://impress.openneo.net/items?utf8=%E2%9C%93&q=%s&commit=search";
+        let link = "http://impress-2020.openneo.net/items/search/%s";
         if (extras.itemid !== -1 && typeof extras.itemid != "undefined") {
-            link = "http://impress.openneo.net/items/" + extras.itemid;
+            link = `http://impress-2020.openneo.net/items/${extras.itemid}`;
         }
-        links += combiner(item, link, linkmap.dti.img);
+        // Beta DTI uses %20 as space, instead of + like other things
+        let dti_name = cleanItem(item.replaceAll(" ", "%20"));
+        links += combiner(dti_name, link, linkmap.dti.img);
     }
 
     // Changed quests to use div, because p makes the text spill out of RE box
