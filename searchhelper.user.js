@@ -207,6 +207,7 @@ if (isBeta) {
      Inventory
      Kitchen Quest
      Snow Faerie Quests
+     Illusen/Jhudora
     */
 
     // Common functions go here
@@ -274,6 +275,12 @@ if (isBeta) {
         $(document).ajaxSuccess(genericQuest);
     }
 
+    // Illusen & Jhudora
+    if ($(".faerie-img").exists()) {
+        let itemname = $(":contains('Where is my') > b").text();
+        $(":contains('Where is my')").parent().parent().find("img[src*='/items/']").after(makelinks(itemname));
+    }
+
     // Shop Wiz Auto-Exact
     if (document.URL.includes("wizard.phtml?string=")) {
         $("#criteria").val("exact");
@@ -303,7 +310,6 @@ if (isBeta) {
      KI Training School
      Esophagor
      Edna Quest
-     Illusen/Jhudora
      Employment Agency
      Faerie Quest Page
      Your Shop's Sales History
@@ -449,12 +455,6 @@ if (isBeta) {
             let itemname = $(v).parent().find("b");
             itemname.after(makelinks(itemname.text()));
         });
-    }
-
-    // illusen & jhudora
-    if ($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").exists()) {
-        let itemname = $("center:contains('Where is my') > b").text();
-        $("center:contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
     }
 
     // employment agency
