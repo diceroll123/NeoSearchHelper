@@ -23,7 +23,7 @@
 // @match      http://www.neopets.com/market_your.phtml*
 // @match      http://www.neopets.com/medieval/earthfaerie.phtml*
 // @match      http://www.neopets.com/objects.phtml*
-// @match      http://www.neopets.com/pirates/academy.phtml?type=status
+// @match      http://www.neopets.com/pirates/academy.phtml?type=status*
 // @match      http://www.neopets.com/process_cash_object.phtml
 // @match      http://www.neopets.com/quests.phtml
 // @match      http://www.neopets.com/safetydeposit.phtml*
