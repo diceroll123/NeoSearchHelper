@@ -288,6 +288,18 @@ if (isBeta) {
         $(document).ajaxSuccess(genericQuest);
     }
 
+    // Esophagor
+    if (inURL("halloween/esophagor")) {
+        genericQuest();
+        $(document).ajaxSuccess(genericQuest);
+    }
+
+    // Edna
+    if (inURL("halloween/witchtower")) {
+        genericQuest();
+        $(document).ajaxSuccess(genericQuest);
+    }
+
     // Illusen & Jhudora
     if ($(".faerie-img").exists()) {
         let itemname = $(":contains('Where is my') > b").text();
