@@ -11,8 +11,8 @@
 // @match      *://www.neopets.com/games/kadoatery/index.phtml
 // @match      *://www.neopets.com/generalstore.phtml*
 // @match      *://www.neopets.com/genie.phtml*
-// @match      *://www.neopets.com/halloween/esophagor*.phtml
-// @match      *://www.neopets.com/halloween/witchtower*.phtml
+// @match      *://www.neopets.com/halloween/esophagor*.phtml*
+// @match      *://www.neopets.com/halloween/witchtower*.phtml*
 // @match      *://www.neopets.com/hospital.phtml
 // @match      *://www.neopets.com/inventory.phtml*
 // @match      *://www.neopets.com/island/*training.phtml?*type=status*
