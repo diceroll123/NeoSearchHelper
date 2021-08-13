@@ -414,7 +414,8 @@ if (isBeta) {
     // only downside is not knowing if something is NC if it's in the closet. Oh well, no way to know.
     if (document.URL.includes("safetydeposit") || document.URL.includes("closet")) {
         $("img[src*='/items/']").each(function (k, v) {
-            let id = $(v).parent().parent().find("td").eq(5).find("input").attr("name").match(/\d+/g)[0];
+            let itemInput = $(v).parent().parent().find("td").eq(5).find("input");
+            let id = itemInput.attr("data-item_id") || itemInput.attr("name").match(/\d+/g)[0];
 
             let iswearable = $(v).parent().parent().find("td").eq(1).text().includes("(wearable)");
             if (document.URL.includes("closet")) { // because it'll always be wearable if it's in the closet...
