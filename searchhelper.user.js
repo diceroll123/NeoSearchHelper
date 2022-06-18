@@ -52,23 +52,23 @@ const linkmap = { // for urls and images for each search type
         "img": "http://images.neopets.com/premium/shopwizard/ssw-icon.svg"
     },
     sw: {
-        "url": "http://www.neopets.com/shops/wizard.phtml?string=%s",
+        "url": "https://www.neopets.com/shops/wizard.phtml?string=%s",
         "img": "http://images.neopets.com/themes/h5/basic/images/shopwizard-icon.png"
     },
     tp: {
-        "url": "http://www.neopets.com/island/tradingpost.phtml?type=browse&criteria=item_exact&search_string=%s",
+        "url": "https://www.neopets.com/island/tradingpost.phtml?type=browse&criteria=item_exact&search_string=%s",
         "img": "http://images.neopets.com/themes/h5/basic/images/tradingpost-icon.png"
     },
     au: {
-        "url": "http://www.neopets.com/genie.phtml?type=process_genie&criteria=exact&auctiongenie=%s",
+        "url": "https://www.neopets.com/genie.phtml?type=process_genie&criteria=exact&auctiongenie=%s",
         "img": "http://images.neopets.com/themes/h5/basic/images/auction-icon.png"
     },
     sdb: {
-        "url": "http://www.neopets.com/safetydeposit.phtml?obj_name=%s&category=0",
+        "url": "https://www.neopets.com/safetydeposit.phtml?obj_name=%s&category=0",
         "img": "http://images.neopets.com/images/emptydepositbox.gif"
     },
     closet: {
-        "url": "http://www.neopets.com/closet.phtml?obj_name=%s",
+        "url": "https://www.neopets.com/closet.phtml?obj_name=%s",
         "img": "http://images.neopets.com/items/ffu_illusen_armoire.gif"
     },
     jni: {
@@ -76,7 +76,7 @@ const linkmap = { // for urls and images for each search type
         "img": "http://images.neopets.com/items/toy_plushie_negg_fish.gif"
     },
     battlepedia: {
-        "url": "http://battlepedia.jellyneo.net/index.php?search=%s",
+        "url": "https://battlepedia.jellyneo.net/index.php?search=%s",
         "img": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAChklEQVQ4T5XRW0iTARQH8P83Vi7n2CUvm0hroW7aFK1t+nkBe1BYK7KHoCYZXpplPUTkQ0WQQg9FIURiZHRDs8wEK6QNibFhZagT3drmFadJlq3mnM55+cIvIqKmdZ4Pv/M/5xAhigO5LOaGWI975hkGXnzAfxbBSy84oi3Q3vP7/Qv91n6Tw+547PXOtMPeNvYvFoFYdUTJsaPDMTExHKlUitnZWej1+hm705n0/sll13oIsdqgKLyoL9Pp8qanp8FgMCAQCNDU1GQnNi4qDVcrfGshNMAnC05UVlXdYLFYcDqdEIlE8Hg8MJvN9cbaisPrApDtji8pLXWQJElQFAWXywU2m43x8XEMj46Uvbx28lYwhE5AV4I6XbNnb4P2kHab2+3G5OQknSIQCMzdrqlOwYhpcLUtTY7k8DBGoW9h5ZHRgq5fAIDoHF345kh+XVZWdr5EIoHNZgOXy4XF0tNn7m5WkP5uTrGasHFCIbz5HK1GC5X/G/AzzJa84zqpTFotl8tDV9OIxWI0NjY2cB0116+UL3XWGxAYmqBkpj6M/hWgofgcWUSUuE6pUmUxmUzExcWht+V8a1Hq2319I0CHldJ09KMtOPAjDhGmPFiVmJhQIRQKQySCuTenxKfJM7VwTXyhVJ1WTK0J5KSA551H6s4d0Q/ZYtKrkQ5EGgxWbs8gcbe9a6WYnhDsPRkJECu3E3VFauQ6xoCtIqDFBETwgKVl4NNXuLqGKEVQQJOOc8Ua4tI7OxY/ukF99sDhm6OeZsiJyig+kJkEXLhDnQ0K7EpGGmsTUe3zU/f9C2gOZWHZ2ItvJRqic382VK+t9CF16x3xjw0zpeDw+CifD2DqVQ8efAfoI/lhtfaY7AAAAABJRU5ErkJggg=="
     },
     dti: {
