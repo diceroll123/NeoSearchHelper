@@ -573,6 +573,10 @@ if (isBeta) {
         $(".equipTable").css({"overflow-y": "scroll"});
     }
 
+    function sswlimited(item) {
+        return (item.endsWith("Nerkmid") || item.endsWith("Paint Brush") || item.endsWith("Transmogrification Potion") || item.endsWith("Laboratory Map"));
+    }
+
     function sswopen(item) {
         if ($(".sswdrop").hasClass("panel_hidden")) {
             $("#sswmenu .imgmenu").click();
@@ -581,6 +585,8 @@ if (isBeta) {
         if ($("#ssw-tabs-1").hasClass("ui-tabs-hide")) {
             $('#ssw-tabs').tabs('select', 0);
         }
+
+        $("#price-limited").prop("checked", sswlimited(item));
 
         $("#ssw-criteria").val("exact");
 
