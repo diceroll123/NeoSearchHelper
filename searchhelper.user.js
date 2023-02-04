@@ -574,7 +574,7 @@ if (isBeta) {
     }
 
     function sswlimited(item) {
-        return (item.endsWith("Nerkmid") || item.endsWith("Paint Brush") || item.endsWith("Transmogrification Potion") || item.endsWith("Laboratory Map"));
+        return (/Nerkmid($|.X+$)/.test(item) || item.endsWith("Paint Brush") || item.endsWith("Transmogrification Potion") || item.endsWith("Laboratory Map"));
     }
 
     function sswopen(item) {
