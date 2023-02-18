@@ -1,35 +1,35 @@
 // ==UserScript==
 // @name       Neopets - Search Helper
 // @version    1.0.17
-// @match      *://www.neopets.com/auctions.phtml*
-// @match      *://www.neopets.com/closet.phtml*
-// @match      *://www.neopets.com/dome/neopets.phtml*
-// @match      *://www.neopets.com/faerieland/darkfaerie.phtml*
-// @match      *://www.neopets.com/faerieland/employ/employment.phtml*
-// @match      *://www.neopets.com/faerieland/hiddentower938.phtml
-// @match      *://www.neopets.com/games/kadoatery/*
-// @match      *://www.neopets.com/games/kadoatery/index.phtml
-// @match      *://www.neopets.com/generalstore.phtml*
-// @match      *://www.neopets.com/genie.phtml*
-// @match      *://www.neopets.com/halloween/esophagor*.phtml*
-// @match      *://www.neopets.com/halloween/witchtower*.phtml*
-// @match      *://www.neopets.com/hospital.phtml
-// @match      *://www.neopets.com/inventory.phtml*
-// @match      *://www.neopets.com/island/*training.phtml?*type=status*
-// @match      *://www.neopets.com/island/kitchen*.phtml*
-// @match      *://www.neopets.com/island/tradingpost.phtml*
-// @match      *://www.neopets.com/market.phtml*
-// @match      *://www.neopets.com/market_your.phtml*
-// @match      *://www.neopets.com/medieval/earthfaerie.phtml*
-// @match      *://www.neopets.com/objects.phtml*
-// @match      *://www.neopets.com/pirates/academy.phtml?type=status*
-// @match      *://www.neopets.com/process_cash_object.phtml
-// @match      *://www.neopets.com/quests.phtml
-// @match      *://www.neopets.com/safetydeposit.phtml*
-// @match      *://www.neopets.com/shops/wizard.phtml*
-// @match      *://www.neopets.com/space/coincidence.phtml
-// @match      *://www.neopets.com/winter/igloo2.phtml
-// @match      *://www.neopets.com/winter/snowfaerie*.phtml*
+// @match      *://*.neopets.com/auctions.phtml*
+// @match      *://*.neopets.com/closet.phtml*
+// @match      *://*.neopets.com/dome/neopets.phtml*
+// @match      *://*.neopets.com/faerieland/darkfaerie.phtml*
+// @match      *://*.neopets.com/faerieland/employ/employment.phtml*
+// @match      *://*.neopets.com/faerieland/hiddentower938.phtml
+// @match      *://*.neopets.com/games/kadoatery/*
+// @match      *://*.neopets.com/games/kadoatery/index.phtml
+// @match      *://*.neopets.com/generalstore.phtml*
+// @match      *://*.neopets.com/genie.phtml*
+// @match      *://*.neopets.com/halloween/esophagor*.phtml*
+// @match      *://*.neopets.com/halloween/witchtower*.phtml*
+// @match      *://*.neopets.com/hospital.phtml
+// @match      *://*.neopets.com/inventory.phtml*
+// @match      *://*.neopets.com/island/*training.phtml?*type=status*
+// @match      *://*.neopets.com/island/kitchen*.phtml*
+// @match      *://*.neopets.com/island/tradingpost.phtml*
+// @match      *://*.neopets.com/market.phtml*
+// @match      *://*.neopets.com/market_your.phtml*
+// @match      *://*.neopets.com/medieval/earthfaerie.phtml*
+// @match      *://*.neopets.com/objects.phtml*
+// @match      *://*.neopets.com/pirates/academy.phtml?type=status*
+// @match      *://*.neopets.com/process_cash_object.phtml
+// @match      *://*.neopets.com/quests.phtml
+// @match      *://*.neopets.com/safetydeposit.phtml*
+// @match      *://*.neopets.com/shops/wizard.phtml*
+// @match      *://*.neopets.com/space/coincidence.phtml
+// @match      *://*.neopets.com/winter/igloo2.phtml
+// @match      *://*.neopets.com/winter/snowfaerie*.phtml*
 // ==/UserScript==
 
 const imgSize = 20; // for the search images
