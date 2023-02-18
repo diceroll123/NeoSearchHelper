@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name       Neopets - Search Helper
-// @version    1.0.17
+// @version    1.0.18
 // @match      *://*.neopets.com/auctions.phtml*
 // @match      *://*.neopets.com/closet.phtml*
 // @match      *://*.neopets.com/dome/neopets.phtml*
