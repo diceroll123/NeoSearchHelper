@@ -1,35 +1,41 @@
 // ==UserScript==
-// @name       Neopets - Search Helper
-// @version    1.0.18
-// @match      *://*.neopets.com/auctions.phtml*
-// @match      *://*.neopets.com/closet.phtml*
-// @match      *://*.neopets.com/dome/neopets.phtml*
-// @match      *://*.neopets.com/faerieland/darkfaerie.phtml*
-// @match      *://*.neopets.com/faerieland/employ/employment.phtml*
-// @match      *://*.neopets.com/faerieland/hiddentower938.phtml
-// @match      *://*.neopets.com/games/kadoatery/*
-// @match      *://*.neopets.com/games/kadoatery/index.phtml
-// @match      *://*.neopets.com/generalstore.phtml*
-// @match      *://*.neopets.com/genie.phtml*
-// @match      *://*.neopets.com/halloween/esophagor*.phtml*
-// @match      *://*.neopets.com/halloween/witchtower*.phtml*
-// @match      *://*.neopets.com/hospital.phtml
-// @match      *://*.neopets.com/inventory.phtml*
-// @match      *://*.neopets.com/island/*training.phtml?*type=status*
-// @match      *://*.neopets.com/island/kitchen*.phtml*
-// @match      *://*.neopets.com/island/tradingpost.phtml*
-// @match      *://*.neopets.com/market.phtml*
-// @match      *://*.neopets.com/market_your.phtml*
-// @match      *://*.neopets.com/medieval/earthfaerie.phtml*
-// @match      *://*.neopets.com/objects.phtml*
-// @match      *://*.neopets.com/pirates/academy.phtml?type=status*
-// @match      *://*.neopets.com/process_cash_object.phtml
-// @match      *://*.neopets.com/quests.phtml
-// @match      *://*.neopets.com/safetydeposit.phtml*
-// @match      *://*.neopets.com/shops/wizard.phtml*
-// @match      *://*.neopets.com/space/coincidence.phtml
-// @match      *://*.neopets.com/winter/igloo2.phtml
-// @match      *://*.neopets.com/winter/snowfaerie*.phtml*
+// @name         Neopets - Search Helper
+// @version      1.0.19
+// @namespace    neopets
+// @description  Adds convenient search icons to many places
+// @author       diceroll123
+// @match        *://*.neopets.com/auctions.phtml*
+// @match        *://*.neopets.com/closet.phtml*
+// @match        *://*.neopets.com/dome/neopets.phtml*
+// @match        *://*.neopets.com/faerieland/darkfaerie.phtml*
+// @match        *://*.neopets.com/faerieland/employ/employment.phtml*
+// @match        *://*.neopets.com/faerieland/hiddentower938.phtml
+// @match        *://*.neopets.com/games/kadoatery/*
+// @match        *://*.neopets.com/games/kadoatery/index.phtml
+// @match        *://*.neopets.com/generalstore.phtml*
+// @match        *://*.neopets.com/genie.phtml*
+// @match        *://*.neopets.com/halloween/esophagor*.phtml*
+// @match        *://*.neopets.com/halloween/witchtower*.phtml*
+// @match        *://*.neopets.com/hospital.phtml
+// @match        *://*.neopets.com/inventory.phtml*
+// @match        *://*.neopets.com/island/*training.phtml?*type=status*
+// @match        *://*.neopets.com/island/kitchen*.phtml*
+// @match        *://*.neopets.com/island/tradingpost.phtml*
+// @match        *://*.neopets.com/market.phtml*
+// @match        *://*.neopets.com/market_your.phtml*
+// @match        *://*.neopets.com/medieval/earthfaerie.phtml*
+// @match        *://*.neopets.com/objects.phtml*
+// @match        *://*.neopets.com/pirates/academy.phtml?type=status*
+// @match        *://*.neopets.com/process_cash_object.phtml
+// @match        *://*.neopets.com/quests.phtml
+// @match        *://*.neopets.com/quickstock.phtml*
+// @match        *://*.neopets.com/safetydeposit.phtml*
+// @match        *://*.neopets.com/shops/wizard.phtml*
+// @match        *://*.neopets.com/space/coincidence.phtml
+// @match        *://*.neopets.com/winter/igloo2.phtml
+// @match        *://*.neopets.com/winter/snowfaerie*.phtml*
+// @icon         https://www.neopets.com/favicon.ico
+// @grant        none
 // ==/UserScript==
 
 const imgSize = 20; // for the search images
@@ -558,6 +564,18 @@ if (isBeta) {
             let cell = $(element).find("td").eq(1);
             if (cell.attr('bgcolor') === "#ffffcc") {
                 $(cell).append(makelinks($(cell).text()));
+            }
+        });
+    }
+
+    // Quickstock
+    if (document.URL.includes("quickstock.phtml")) {
+        $('form[name="quickstock"] tr').each(function (index, element) {
+            if ($(element).find("td").length > 1) {
+                const cell = $(element).find("td").eq(0);
+                if ($(cell).text() !== "Check All") {
+                    $(cell).append(makelinks($(cell).text()));
+                }
             }
         });
     }
