@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Neopets - Search Helper
-// @version      1.0.19
+// @version      1.0.20
 // @namespace    neopets
 // @description  Adds convenient search icons to many places
 // @author       diceroll123
@@ -35,6 +35,7 @@
 // @match        *://*.neopets.com/winter/igloo2.phtml
 // @match        *://*.neopets.com/winter/snowfaerie*.phtml*
 // @icon         https://www.neopets.com/favicon.ico
+// @require      https://images.neopets.com/js/jquery-1.7.1.min.js
 // @grant        none
 // ==/UserScript==
 
@@ -197,8 +198,8 @@ function makelinks(item, extras) {
 
     // TODO: remove when TP is converted (hopefully)
     // because of how ugly this makes the TP, let's inline it
-    let isOnTP = inURL("/island/tradingpost.phtml");
-    if (isOnTP) {
+    const needInline = inURL("/island/tradingpost.phtml") || inURL("/quickstock.phtml");
+    if (needInline) {
         helper.css({
             "display": "inline-block",
             "margin-left": "4px"
