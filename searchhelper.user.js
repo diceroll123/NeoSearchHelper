@@ -34,6 +34,8 @@
 // @match        *://*.neopets.com/space/coincidence.phtml
 // @match        *://*.neopets.com/winter/igloo2.phtml
 // @match        *://*.neopets.com/winter/snowfaerie*.phtml*
+// @match        *://*.neopets.com/browseshop.phtml*
+// @match        *://*.neopets.com/halloween/garage.phtml*
 // @icon         https://www.neopets.com/favicon.ico
 // @grant        none
 // ==/UserScript==
@@ -363,6 +365,13 @@ if (isBeta) {
         });
     }
 
+        // Almost Abandoned Attic
+    if (document.URL.includes("/garage.phtml")) {
+        $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
+            $(v).after(makelinks($(v).text()));
+        });
+    }
+
     // Trading Post
     if (document.URL.includes("/island/tradingpost.phtml")) {
         $("img[src*='/items/']").each(function (k, v) {
@@ -577,6 +586,13 @@ if (isBeta) {
                     $(cell).append(makelinks($(cell).text()));
                 }
             }
+        });
+    }
+    
+    // User Shops
+    if (document.URL.includes("owner=")) {
+        $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
+            $(v).after(makelinks($(v).text()));
         });
     }
 
