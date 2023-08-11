@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Neopets - Search Helper
-// @version      1.0.21.1
+// @version      1.0.21
 // @namespace    neopets
 // @description  Adds convenient search icons to many places
 // @author       diceroll123
