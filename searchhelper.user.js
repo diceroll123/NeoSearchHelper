@@ -182,13 +182,11 @@ function makelinks(item, extras) {
 
     // DTI
     if (extras.wearable) {
-        let link = "https://impress.openneo.net/items/search/%s";
+        let link = "https://impress.openneo.net/items?q=%s";
         if (extras.itemid !== -1 && typeof extras.itemid != "undefined") {
             link = `https://impress.openneo.net/items/${extras.itemid}`;
         }
-        // Beta DTI uses %20 as space, instead of + like other things
-        let dti_name = cleanItem(item.replaceAll(" ", "%20"));
-        links += combiner(dti_name, link, linkmap.dti.img);
+        links += combiner(item, link, linkmap.dti.img);
     }
 
     // Changed quests to use div, because p makes the text spill out of RE box
