@@ -186,7 +186,7 @@ function makelinks(item, extras) {
         if (extras.itemid !== -1 && typeof extras.itemid != "undefined") {
             link = `https://impress.openneo.net/items/${extras.itemid}`;
         }
-        links += combiner(item, link, linkmap.dti.img);
+        links += combiner(name, link, linkmap.dti.img);
     }
 
     // Changed quests to use div, because p makes the text spill out of RE box
