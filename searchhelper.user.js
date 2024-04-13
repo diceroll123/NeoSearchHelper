@@ -182,9 +182,9 @@ function makelinks(item, extras) {
 
     // DTI
     if (extras.wearable) {
-        let link = "http://impress-2020.openneo.net/items/search/%s";
+        let link = "https://impress.openneo.net/items/search/%s";
         if (extras.itemid !== -1 && typeof extras.itemid != "undefined") {
-            link = `http://impress-2020.openneo.net/items/${extras.itemid}`;
+            link = `https://impress.openneo.net/items/${extras.itemid}`;
         }
         // Beta DTI uses %20 as space, instead of + like other things
         let dti_name = cleanItem(item.replaceAll(" ", "%20"));
