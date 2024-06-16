@@ -315,6 +315,13 @@ if (isBeta) {
         $("#criteria").val("exact");
     }
 
+    // Hospital
+    if (inURL("/hospital.phtml")) {
+        $(".nh-disease-cure > span > b").each(function (k, v) {
+            $(v).parent().after(makelinks($(v).text()));
+        });
+    }
+
     function sswopen(item) {
         // open this in such a way that if the "__2020" was changed/removed without warning, this will still work
         // TODO: hardcode the class name better once out of beta
@@ -365,14 +372,6 @@ if (isBeta) {
     if (document.URL.includes("/island/tradingpost.phtml")) {
         $("img[src*='/items/']").each(function (k, v) {
             $(this.nextSibling).after(makelinks($(this)[0].nextSibling.nodeValue));
-        });
-    }
-
-    // Hospital
-    if (document.URL.includes("/hospital.phtml")) {
-        $("img[src*='/items/']").parent().prev().find("b").each(function (k, v) {
-            $(v).after(makelinks($(v).text())).before("<br>");
-            $(v).parent().width(150);
         });
     }
 
