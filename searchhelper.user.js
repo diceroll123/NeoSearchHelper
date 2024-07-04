@@ -34,6 +34,7 @@
 // @match        *://*.neopets.com/space/coincidence.phtml
 // @match        *://*.neopets.com/winter/igloo2.phtml
 // @match        *://*.neopets.com/winter/snowfaerie*.phtml*
+// @match        *://*.neopets.com/questlog/
 // @icon         https://www.neopets.com/favicon.ico
 // @grant        none
 // ==/UserScript==
@@ -41,7 +42,7 @@
 const imgSize = 20; // for the search images
 
 $(`<style type='text/css'>
-.searchimg { cursor: pointer; height: ${imgSize}px !important; width: ${imgSize}px !important; }
+.searchimg { cursor: pointer; height: ${imgSize}px !important; width: ${imgSize}px !important; border: none !important; border-radius: 0px !important;}
 .search-helper { margin-top: 0; margin-bottom: 0; }
 </style>`).appendTo("head");
 
@@ -319,6 +320,15 @@ if (isBeta) {
     if (inURL("/hospital.phtml")) {
         $(".nh-disease-cure > span > b").each(function (k, v) {
             $(v).parent().after(makelinks($(v).text()));
+        });
+    }
+
+    // Quest Log Daily Rewards
+    if (inURL("/questlog")) {
+        // I know this doesn't work when navigating the quest log tabs,
+        // but I really don't want to bog down the userscript with "fetch" monkeypatches etc.
+        $(".ql-reward-item + .ql-reward-label").each(function (k, v) {
+            $(v).append(makelinks($(v).text()));
         });
     }
 
