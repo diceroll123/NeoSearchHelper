@@ -424,18 +424,23 @@ if (isBeta) {
     }
 
     // SDB & Closet
-    // only downside is not knowing if something is NC if it's in the closet. Oh well, no way to know.
-    if (document.URL.includes("safetydeposit") || document.URL.includes("closet")) {
+    let isSDB = document.URL.includes("safetydeposit");
+    let isCloset = document.URL.includes("closet");
+    if (isSDB || isCloset) {
         $("img[src*='/items/']").each(function (k, v) {
             let itemInput = $(v).parent().parent().find("td").eq(5).find("input");
             let id = itemInput.attr("data-item_id") || itemInput.attr("name").match(/\d+/g)[0];
 
-            let iswearable = $(v).parent().parent().find("td").eq(1).text().includes("(wearable)");
-            if (document.URL.includes("closet")) { // because it'll always be wearable if it's in the closet...
-                iswearable = true;
+            let isWearable = isCloset || $(v).parent().parent().find("td").eq(1).text().includes("(wearable)");
+            let isNeoCash = false;
+            if(isSDB) {
+                let category = $(v).parent().parent().find("td").eq(3);
+                isNeoCash = category.text().trim() === "Neocash";
+            } else if (isCloset) {
+                // this is not 100% accurate, see: https://items.jellyneo.net/item-error-list/rarities/
+                isNeoCash = $(v).parent().next("td").text().includes("(Artifact - 500)");
             }
-            let category = $(v).parent().parent().find("td").eq(3);
-            let extras = {cash: (category.text().trim() === "Neocash"), wearable: iswearable, itemid: id};
+            let extras = {cash: isNeoCash, wearable: isWearable, itemid: id};
             let nametd = $(v).parent().parent().find("td").eq(1);
             nametd.find("b").eq(0).after(makelinks(nametd.find("b").eq(0).justtext(), extras));
         });
