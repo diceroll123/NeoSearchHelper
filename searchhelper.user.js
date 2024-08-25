@@ -330,6 +330,10 @@ if (isBeta) {
         $(".ql-reward-item + .ql-reward-label").each(function (k, v) {
             $(v).append(makelinks($(v).text()));
         });
+
+        $(".ql-bonus-reward > .ql-bonus-item").each(function (k, v) {
+          $(v).after(makelinks($(v).text()));
+        });
     }
 
     function sswopen(item) {
