@@ -35,6 +35,7 @@
 // @match        *://*.neopets.com/winter/igloo2.phtml
 // @match        *://*.neopets.com/winter/snowfaerie*.phtml*
 // @match        *://*.neopets.com/questlog/
+// @match        *://*.neopets.com/games/teatime/
 // @icon         https://www.neopets.com/favicon.ico
 // @grant        none
 // ==/UserScript==
@@ -333,6 +334,13 @@ if (isBeta) {
 
         $(".ql-bonus-reward > .ql-bonus-item").each(function (k, v) {
           $(v).after(makelinks($(v).text()));
+        });
+    }
+
+    // Tea Time With Tavi
+    if (inURL("/teatime")) {
+        $(".ttwt-item").each(function (k, v) {
+            $(v).append(makelinks($(v).text()));
         });
     }
 
