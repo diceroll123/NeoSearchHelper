@@ -35,6 +35,7 @@
 // @match        *://*.neopets.com/winter/igloo2.phtml
 // @match        *://*.neopets.com/winter/snowfaerie*.phtml*
 // @match        *://*.neopets.com/questlog/
+// @match        *://*.neopets.com/games/teatime/
 // @icon         https://www.neopets.com/favicon.ico
 // @grant        none
 // ==/UserScript==
@@ -336,6 +337,18 @@ if (isBeta) {
         });
     }
 
+    // Tea Time With Tavi
+    if (inURL("/games/teatime")) {
+        function TaviQuest() {
+            $(".ttwt-item > img[src*='/items/'] + span").each(function (index, element) {
+                if (!hasSearchHelper(element)) {
+                    $(element).after(makelinks($(element).text()));
+                }
+            });
+        }
+        TaviQuest();
+        $(document).ajaxSuccess(function() {setTimeout(TaviQuest, 1000);});
+    }
 
     function sswopen(item) {
         $(".premium-widget__2024").hide(); // hide all open widgets
