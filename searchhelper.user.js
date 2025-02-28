@@ -336,13 +336,10 @@ if (isBeta) {
         });
     }
 
-    function sswopen(item) {
-        // open this in such a way that if the "__2020" was changed/removed without warning, this will still work
-        // TODO: hardcode the class name better once out of beta
-        $("[class^='ssw-header']").last().parent().show();
 
-        // if results are currently up, close them
-        $("#ssw-button-new-search").click();
+    function sswopen(item) {
+        $(".premium-widget__2024").hide(); // hide all open widgets
+        toggleWidget__2020("ssw");
 
         $("#ssw-criteria").val("exact");
         $("#searchstr").val(item);
