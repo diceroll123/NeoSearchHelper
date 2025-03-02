@@ -326,15 +326,23 @@ if (isBeta) {
 
     // Quest Log Daily Rewards
     if (inURL("/questlog")) {
-        // I know this doesn't work when navigating the quest log tabs,
-        // but I really don't want to bog down the userscript with "fetch" monkeypatches etc.
-        $(".ql-reward-item + .ql-reward-label").each(function (k, v) {
-            $(v).append(makelinks($(v).text()));
-        });
+        function dailyReward() {
+            $(".ql-reward-item + .ql-reward-label + .search-helper").remove();
+            $(".ql-reward-item + .ql-reward-label").each(function (k, v) {
+                $(v).after(makelinks($(v).text()));
+            });
+        }
+        dailyReward();
+        $(document).ajaxSuccess(dailyReward);
 
-        $(".ql-bonus-reward > .ql-bonus-item").each(function (k, v) {
-          $(v).after(makelinks($(v).text()));
-        });
+        function bonusReward() {
+            $(".ql-bonus-reward > .search-helper").remove();
+            $(".ql-bonus-reward > .ql-bonus-item").each(function (k, v) {
+                $(v).after(makelinks($(v).text()));
+            });
+        }
+        bonusReward();
+        $(document).ajaxSuccess(bonusReward);
     }
 
     // Tea Time With Tavi
