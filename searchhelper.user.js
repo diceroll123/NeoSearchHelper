@@ -364,6 +364,7 @@ if (isBeta) {
 
         $("#ssw-criteria").val("exact");
         $("#searchstr").val(item);
+        $("#ssw-button-new-search")[0].click();
     }
 } else {
     /*
