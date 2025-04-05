@@ -5,8 +5,10 @@
 // @description  Adds convenient search icons to many places
 // @author       diceroll123
 // @match        *://*.neopets.com/auctions.phtml*
+// @match        *://*.neopets.com/browseshop.phtml?owner*
 // @match        *://*.neopets.com/closet.phtml*
 // @match        *://*.neopets.com/dome/neopets.phtml*
+// @match        *://*.neopets.com/donations.phtml*
 // @match        *://*.neopets.com/faerieland/darkfaerie.phtml*
 // @match        *://*.neopets.com/faerieland/employ/employment.phtml*
 // @match        *://*.neopets.com/faerieland/hiddentower938.phtml
@@ -17,6 +19,7 @@
 // @match        *://*.neopets.com/halloween/esophagor*.phtml*
 // @match        *://*.neopets.com/halloween/witchtower*.phtml*
 // @match        *://*.neopets.com/hospital.phtml
+// @match        *://*.neopets.com/halloween/garage.phtml
 // @match        *://*.neopets.com/inventory.phtml*
 // @match        *://*.neopets.com/island/*training.phtml?*type=status*
 // @match        *://*.neopets.com/island/kitchen*.phtml*
@@ -36,6 +39,7 @@
 // @match        *://*.neopets.com/winter/snowfaerie*.phtml*
 // @match        *://*.neopets.com/questlog/
 // @match        *://*.neopets.com/games/teatime/
+// @match        *://*.neopets.com/thriftshoppe/index.phtml*
 // @icon         https://www.neopets.com/favicon.ico
 // @grant        none
 // ==/UserScript==
@@ -226,7 +230,14 @@ if (isBeta) {
      Inventory
      Kitchen Quest
      Snow Faerie Quests
+     Esophagor
+     Edna
      Illusen/Jhudora
+     Shop Wiz Auto-Exact
+     Hospital
+     Money Tree
+     Quest Log Daily Rewards
+     Tea Time With Tavi
     */
 
     // Common functions go here
@@ -324,6 +335,13 @@ if (isBeta) {
         });
     }
 
+    // Money Tree
+    if (inURL("donations.phtml")) {
+       $(".donated a").each(function (k, v) {
+        $(v).find(".item-benefactor").append(makelinks($(v).data("name")));
+       });
+    }
+
     // Quest Log Daily Rewards
     if (inURL("/questlog")) {
         function dailyReward() {
@@ -384,6 +402,9 @@ if (isBeta) {
      Illusen/Jhudora
      Employment Agency
      Faerie Quest Page
+     Second Hand Shoppe
+     User Shops
+     Almost Abandoned Attic
      Your Shop's Sales History
     */
 
@@ -407,6 +428,36 @@ if (isBeta) {
             $(this.nextSibling).after(makelinks($(this)[0].nextSibling.nodeValue));
         });
     }
+
+       // Second Hand Shoppe
+    if (document.URL.includes("thriftshoppe")) {
+        $("img[src*='/items/']").each(function(k, v) {
+            $(v).closest("a").find("div:contains('donated by')").after(makelinks($(v).closest("a").find("div[style*='font-weight:bold']").text()));
+        });
+    }
+
+   // User shops
+    if(document.URL.includes("/browseshop.phtml?owner")){
+        $("img[src*='/items/']").each(function(k,v){
+            var b = $(v).parent().parent().find("b").first(),
+            // Remove the <br> tag to fix spacing    
+            br = b.next("br").remove();
+            b.after(makelinks(b.text())).after(br);
+        });
+    }
+
+    // Almost Abandoned Attic
+    if(document.URL.includes("/halloween/garage")){
+        $("img[src*='/items/']").each(function(k,v){
+          var b = $(v).parent().find("b").first(),
+              links = makelinks(b.text());
+          // Stop the links from activating the buy prompt
+          links.find("a").on("click", e => e.stopPropagation());
+          b.after(links);
+          // Remove the <br> tag to fix spacing
+          links.next("br").remove();
+        });
+      }
 
     // Redeeming Cash
     if (document.URL.includes("process_cash_object")) {
