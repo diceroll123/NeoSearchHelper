@@ -326,23 +326,42 @@ if (isBeta) {
 
     // Quest Log Daily Rewards
     if (inURL("/questlog")) {
-        function dailyReward() {
+        function addQuestLogLinks() {
+            // Daily rewards
             $(".ql-reward-item + .ql-reward-label + .search-helper").remove();
-            $(".ql-reward-item + .ql-reward-label").each(function (k, v) {
+            $(".ql-reward-item + .ql-reward-label").each(function(k, v) {
                 $(v).after(makelinks($(v).text()));
             });
-        }
-        dailyReward();
-        $(document).ajaxSuccess(dailyReward);
 
-        function bonusReward() {
+            // Bonus rewards
             $(".ql-bonus-reward > .search-helper").remove();
-            $(".ql-bonus-reward > .ql-bonus-item").each(function (k, v) {
-                $(v).after(makelinks($(v).text()));
+            $(".ql-bonus-reward > .ql-bonus-name").each(function(k, v) {
+                let itemname = $(v).text();
+                if (itemname.endsWith(",000 NP")) { // ignore NP rewards
+                    return;
+                }
+                $(v).after(makelinks(itemname));
             });
         }
-        bonusReward();
-        $(document).ajaxSuccess(bonusReward);
+
+        addQuestLogLinks();
+
+        const questLogContent = document.getElementById("QuestLogContent");
+        if (questLogContent) {
+            const observer = new MutationObserver(function(mutations, obs) {
+                obs.disconnect();
+                addQuestLogLinks();
+                obs.observe(questLogContent, {
+                    childList: true,
+                    subtree: true
+                });
+            });
+
+            observer.observe(questLogContent, {
+                childList: true,
+                subtree: true
+            });
+        }
     }
 
     // Tea Time With Tavi
