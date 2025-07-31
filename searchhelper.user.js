@@ -33,6 +33,7 @@
 // @match        *://*.neopets.com/shops/wizard.phtml*
 // @match        *://*.neopets.com/space/coincidence.phtml
 // @match        *://*.neopets.com/winter/igloo2.phtml
+// @match        *://*.neopets.com/halloween/garage.phtml
 // @match        *://*.neopets.com/winter/snowfaerie*.phtml*
 // @match        *://*.neopets.com/questlog/
 // @match        *://*.neopets.com/games/teatime/
@@ -424,6 +425,7 @@ if (isBeta) {
      Employment Agency
      Faerie Quest Page
      Your Shop's Sales History
+     Almost Abandoned Attic
     */
 
     // Main Shops
@@ -435,6 +437,13 @@ if (isBeta) {
 
     // Igloo Garage
     if (document.URL.includes("/winter/igloo2.phtml")) {
+        $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
+            $(v).after(makelinks($(v).text()));
+        });
+    }
+
+    // Almost Abandoned Attic
+    if (inURL("halloween/garage")) {
         $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
             $(v).after(makelinks($(v).text()));
         });
