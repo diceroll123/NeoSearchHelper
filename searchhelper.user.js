@@ -32,7 +32,7 @@
 // @match        *://*.neopets.com/safetydeposit.phtml*
 // @match        *://*.neopets.com/shops/wizard.phtml*
 // @match        *://*.neopets.com/space/coincidence.phtml
-// @match        *://*.neopets.com/winter/igloo2.phtml
+// @match        *://*.neopets.com/winter/igloo.phtml*
 // @match        *://*.neopets.com/winter/snowfaerie*.phtml*
 // @match        *://*.neopets.com/questlog/
 // @match        *://*.neopets.com/games/teatime/
@@ -397,6 +397,13 @@ if (isBeta) {
         $(document).ajaxSuccess(function() {setTimeout(TaviQuest, 1000);});
     }
 
+    // Igloo Garage Sale
+    if (inURL("/winter/igloo.phtml")) {
+      $(".igs-item b").each(function (index, element) {
+        $(element).after(makelinks($(element).text()));
+      });
+    }
+
     function sswopen(item) {
         $(".premium-widget__2024").hide(); // hide all open widgets
         toggleWidget__2020("ssw");
@@ -428,13 +435,6 @@ if (isBeta) {
 
     // Main Shops
     if (document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
-        $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
-            $(v).after(makelinks($(v).text()));
-        });
-    }
-
-    // Igloo Garage
-    if (document.URL.includes("/winter/igloo2.phtml")) {
         $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
             $(v).after(makelinks($(v).text()));
         });
