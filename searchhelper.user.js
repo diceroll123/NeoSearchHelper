@@ -262,6 +262,7 @@ if (isBeta) {
      Tea Time With Tavi
      Igloo Garage Sale
      General Store
+     Battledome Equipment
     */
 
     // Common functions go here
@@ -444,6 +445,18 @@ if (isBeta) {
             links.css({ "margin-top": "-10px" });
             $(element).after(links);
         });
+    }
+
+    // Battledome Beta
+    if (inURL("/dome/neopets")) {
+        $(".equipFrame").each(function (index, element) {
+            const itemname = $(element).text().trim();
+            if (itemname) {
+                // ignore if empty slot
+                $(makelinks(itemname)).appendTo($(element));
+            }
+        });
+        $(".equipTable").css({ "overflow-y": "scroll" });
     }
 
     function sswopen(item) {
@@ -687,18 +700,6 @@ if (isBeta) {
                 }
             }
         });
-    }
-
-    // Battledome
-    if (document.URL.includes("/dome/neopets")) {
-        $(".equipFrame").each(function (index, element) {
-            const itemname = $(element).text().trim();
-            if (itemname) {
-                // ignore if empty slot
-                $(makelinks(itemname)).appendTo($(element));
-            }
-        });
-        $(".equipTable").css({ "overflow-y": "scroll" });
     }
 
     function sswlimited(item) {
