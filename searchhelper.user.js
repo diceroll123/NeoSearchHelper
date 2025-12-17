@@ -472,7 +472,6 @@ if (isBeta) {
      Adds the search icons under things in:
      Trading Post
      Redeeming Cash
-     Auctions
      SDB
      Closet
      Auction Bidding Page
