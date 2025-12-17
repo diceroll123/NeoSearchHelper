@@ -261,6 +261,7 @@ if (isBeta) {
      Quest Log Daily Rewards
      Tea Time With Tavi
      Igloo Garage Sale
+     General Store
     */
 
     // Common functions go here
@@ -433,6 +434,15 @@ if (isBeta) {
     if (inURL("/winter/igloo.phtml")) {
         $(".igs-item b").each(function (index, element) {
             $(element).after(makelinks($(element).text()));
+        });
+    }
+
+    // General Store
+    if (inURL("generalstore.phtml")) {
+        $(".item-title").each(function (index, element) {
+            const links = makelinks($(element).text());
+            links.css({ "margin-top": "-10px" });
+            $(element).after(links);
         });
     }
 
@@ -639,15 +649,6 @@ if (isBeta) {
                 itemname.after(makelinks(itemname.text()));
             }
         );
-    }
-
-    // General Store
-    if (document.URL.includes("generalstore.phtml")) {
-        $("td:contains('Cost'):not(:has('td'))")
-            .find("strong")
-            .each(function (index, element) {
-                $(element).after(makelinks($(element).text()));
-            });
     }
 
     // Hidden Tower
