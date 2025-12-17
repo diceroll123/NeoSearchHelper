@@ -246,7 +246,13 @@ if (isBeta) {
      Inventory
      Kitchen Quest
      Snow Faerie Quests
+     Esophagor Quests
+     Edna Quests
      Illusen/Jhudora
+     Hospital
+     Quest Log Daily Rewards
+     Tea Time With Tavi
+     Igloo Garage Sale
     */
 
     // Common functions go here
@@ -333,6 +339,7 @@ if (isBeta) {
     }
 
     // Shop Wiz Auto-Exact
+    // TODO: tbh this shouldn't be in this userscript
     if (inURL("wizard.phtml?string=")) {
         $("#criteria").val("exact");
     }
@@ -415,22 +422,24 @@ if (isBeta) {
 } else {
     /*
      Adds the search icons under things in:
-     Inventory
+     Trading Post
+     Redeeming Cash
+     Auctions
      SDB
      Closet
      Auction Bidding Page
      Your Shop Price Page
      Coincidence
-     MI Training School
-     KI Training School
-     Snow Faerie
-     Esophagor
-     Edna Quest
-     Kitchen Quest
-     Illusen/Jhudora
+     MI Training
+     Secret Training
+     KI Training
      Employment Agency
      Faerie Quest Page
+     Kadoatery
+     Hidden Tower
      Your Shop's Sales History
+     Quickstock
+     Battledome
     */
 
     // Main Shops
@@ -467,22 +476,6 @@ if (isBeta) {
             const itemname = $(element).text();
             $(element).after(makelinks(itemname));
         })
-    }
-
-    // Inventory
-    if (document.URL.includes("inventory")) {
-        $("img[src*='/items/']").each(function (k, v) {
-            let $nametd = $(v).parent().parent();
-
-            let extras = {cash: $(v).hasClass("otherItem"), wearable: $nametd.hasClass("wearable"), itemid: -1};
-
-            if ($nametd.find("hr").exists()) {
-                extras.tradeable = !$nametd.find("span:contains('(no trade)')").exists();
-                $nametd.find("hr").before(makelinks($nametd.justtext(), extras));
-            } else {
-                $nametd.append(makelinks($nametd.justtext(), extras));
-            }
-        });
     }
 
     // SDB & Closet
@@ -548,44 +541,6 @@ if (isBeta) {
             let itemname = nametd.parent().find("td > b").eq(0).text();
             nametd.parent().find("td > b").eq(0).after(makelinks(itemname));
         });
-    }
-
-    // Snow Faerie
-    // essentially same as kitchen. woo, lazy!
-    if (document.URL.includes("winter/snowfaerie")) {
-        addhr = (document.URL.includes("snowfaerie2") === false);
-        $("img[src*='/items/']").parent().find("b").each(function (k, v) {
-            $(v).after(makelinks($(v).text()));
-        });
-    }
-
-    // Esophagor
-    if (document.URL.includes("halloween/esophagor")) {
-        $("img[src*='/items/']").each(function (k, v) {
-            let itemname = $(v).parent().find("b");
-            itemname.after(makelinks(itemname.text()));
-        });
-    }
-
-    // Edna
-    if (document.URL.includes("halloween/witchtower")) {
-        $("img[src*='/items/']").each(function (k, v) {
-            let itemname = $(v).parent().find("b");
-            itemname.after(makelinks(itemname.text()));
-        });
-    }
-
-    // Kitchen
-    if (document.URL.includes("island/kitchen")) {
-        $("img[src*='/items/']").parent().find("b").each(function (k, v) {
-            $(v).after(makelinks($(v).text()));
-        });
-    }
-
-    // illusen & jhudora
-    if ($("img[src*='ef_2.gif']").exists() || $("img[src*='darkfaeriequest2.gif']").exists()) {
-        let itemname = $("center:contains('Where is my') > b").text();
-        $("center:contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
     }
 
     // employment agency
