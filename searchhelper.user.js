@@ -54,46 +54,47 @@ jQuery.fn.exists = function () {
 // if the active pet dropdown image is there, we're in beta
 const isBeta = $("[class^='nav-pet-menu-icon']").exists();
 
-const linkmap = { // for urls and images for each search type
+const linkmap = {
+    // for urls and images for each search type
     // if the image is not from images.neopets.com, base64 it
     ssw: {
-        "img": "http://images.neopets.com/premium/shopwizard/ssw-icon.svg"
+        img: "http://images.neopets.com/premium/shopwizard/ssw-icon.svg",
     },
     sw: {
-        "url": "https://www.neopets.com/shops/wizard.phtml?string=%s",
-        "img": "http://images.neopets.com/themes/h5/basic/images/shopwizard-icon.png"
+        url: "https://www.neopets.com/shops/wizard.phtml?string=%s",
+        img: "http://images.neopets.com/themes/h5/basic/images/shopwizard-icon.png",
     },
     tp: {
-        "url": "https://www.neopets.com/island/tradingpost.phtml?type=browse&criteria=item_exact&search_string=%s",
-        "img": "http://images.neopets.com/themes/h5/basic/images/tradingpost-icon.png"
+        url: "https://www.neopets.com/island/tradingpost.phtml?type=browse&criteria=item_exact&search_string=%s",
+        img: "http://images.neopets.com/themes/h5/basic/images/tradingpost-icon.png",
     },
     au: {
-        "url": "https://www.neopets.com/genie.phtml?type=process_genie&criteria=exact&auctiongenie=%s",
-        "img": "http://images.neopets.com/themes/h5/basic/images/auction-icon.png"
+        url: "https://www.neopets.com/genie.phtml?type=process_genie&criteria=exact&auctiongenie=%s",
+        img: "http://images.neopets.com/themes/h5/basic/images/auction-icon.png",
     },
     sdb: {
-        "url": "https://www.neopets.com/safetydeposit.phtml?obj_name=%s&category=0",
-        "img": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAECklEQVRYhe1WS08jRxD+qj2PHQ8gbLB5SgaBQKDkyokDXPIbOOcX5RJFSi45RcovyCESIocoOawQSHhxQDwMEg/j4CEz4/FO90zlwIzXsMbrELTaw35SH2ZUVd/XVdVdDXzGZ3yKIKKPxwUAlmVNFAqFNcMwviwUChfZbPZ8b2/vLTP/PTg4eCuE8E9OTlgpxQDeAmgBYAB6EkcCiADESUzu4NASO5H8l8nitoCZmZmv19fXf3AcR0xNTcUDAwOy1WqBmZtE9I+U0t/Z2ckwc2wYhgOgngTIJiR+IirqEMAJ6SsANgADgALgE5F/c3PzZ7lc/lYTQmB6enpI3AOGYYhsNmtalgUAJoAcEWF2dhZhGMJ1Xei6DsMwwNy50f4QBAFM04RlWROVSuVHjYig67qdGjBze6WI4xhSSjSbTRQKBTSbTRSLRdi23ZWkG+I4xvX1NUzThFIKvu8PEVFWS0j1pxyFEDg6OsLW1haICBsbG1heXka5XEYURdD1J10fwPM85PN5LCwsYHt7G47jCACkJTsNezm7rotarYZMJgOlFEZHR5HP53F4eAjbtj9YCqUUTNPEysoKhBCpvQYgozEzWq2WSo9eFEXvBZBSPiBhZmQyGQwPD2NwcPCDAlJ/ImqXN5vNGpOTk5rGzFBKRUTUNngKhmHAMIwHQh73Szc8tmFmWJYlJicnNQ0AiOjJQjIz5ufnsbq6CiJCsVh8Vvd3gWDmjJZ85HsJyOVyKJVKcF0XQoiXIG8LSKMN9bLsTHUcx/+bOSl1JggCU+D+5tL6cSKirk36TBhRFL1KM9Azr8lJQRAEL0UOABkARkr85PgTQqBarWJzcxPlcrndgGlG/svqIkBPU99z/jqOg0ajAeDdPSGlhOd5iOO4r4tICIEoiqBp7WoLAFpfAjoDKaXQaDQwMTGBpaWlvt8OjUYDR0dHKJVKqQ8BoFRAz9bWNA1DQ0PI5XJoNBoYGRnB3Nxc33MAAEqlEqrVKvb39+G6bjsTGgAKw9BMd/L4mDEzSqUS1tbWwMw4PT2FlBKVSqVv8hREhHq9DsdxMD4+HgNQqQArbZRuAgYGBmBZFoiIdV2PPc9rF11KSVEUpd9xstLXkcL9oAuT7wwR2SMjI7bnebdhGNbTEnTtIiJCEAS4u7ur6rr+i+/7f4Rh6CYEDAC7u7u4uLgAEXHyX3WsEO9eSwr3T7McgGFmdqWU+10vICKCUgp3d3e1s7Ozn46Pj78/PT39y/O893qln2HUC10FuK7bvLy8/LVSqXxzfHz8++3trXw2Qz8CmJnDMIRSimu12ptarfbd69evfz4/P6+/xN3fCwSAbNv+amxs7IvFxcXg4ODgt6urqze+77/IzO0byYv4o3J+EvgX4yIhYBP/dWUAAAAASUVORK5CYII="
+        url: "https://www.neopets.com/safetydeposit.phtml?obj_name=%s&category=0",
+        img: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAECklEQVRYhe1WS08jRxD+qj2PHQ8gbLB5SgaBQKDkyokDXPIbOOcX5RJFSi45RcovyCESIocoOawQSHhxQDwMEg/j4CEz4/FO90zlwIzXsMbrELTaw35SH2ZUVd/XVdVdDXzGZ3yKIKKPxwUAlmVNFAqFNcMwviwUChfZbPZ8b2/vLTP/PTg4eCuE8E9OTlgpxQDeAmgBYAB6EkcCiADESUzu4NASO5H8l8nitoCZmZmv19fXf3AcR0xNTcUDAwOy1WqBmZtE9I+U0t/Z2ckwc2wYhgOgngTIJiR+IirqEMAJ6SsANgADgALgE5F/c3PzZ7lc/lYTQmB6enpI3AOGYYhsNmtalgUAJoAcEWF2dhZhGMJ1Xei6DsMwwNy50f4QBAFM04RlWROVSuVHjYig67qdGjBze6WI4xhSSjSbTRQKBTSbTRSLRdi23ZWkG+I4xvX1NUzThFIKvu8PEVFWS0j1pxyFEDg6OsLW1haICBsbG1heXka5XEYURdD1J10fwPM85PN5LCwsYHt7G47jCACkJTsNezm7rotarYZMJgOlFEZHR5HP53F4eAjbtj9YCqUUTNPEysoKhBCpvQYgozEzWq2WSo9eFEXvBZBSPiBhZmQyGQwPD2NwcPCDAlJ/ImqXN5vNGpOTk5rGzFBKRUTUNngKhmHAMIwHQh73Szc8tmFmWJYlJicnNQ0AiOjJQjIz5ufnsbq6CiJCsVh8Vvd3gWDmjJZ85HsJyOVyKJVKcF0XQoiXIG8LSKMN9bLsTHUcx/+bOSl1JggCU+D+5tL6cSKirk36TBhRFL1KM9Azr8lJQRAEL0UOABkARkr85PgTQqBarWJzcxPlcrndgGlG/svqIkBPU99z/jqOg0ajAeDdPSGlhOd5iOO4r4tICIEoiqBp7WoLAFpfAjoDKaXQaDQwMTGBpaWlvt8OjUYDR0dHKJVKqQ8BoFRAz9bWNA1DQ0PI5XJoNBoYGRnB3Nxc33MAAEqlEqrVKvb39+G6bjsTGgAKw9BMd/L4mDEzSqUS1tbWwMw4PT2FlBKVSqVv8hREhHq9DsdxMD4+HgNQqQArbZRuAgYGBmBZFoiIdV2PPc9rF11KSVEUpd9xstLXkcL9oAuT7wwR2SMjI7bnebdhGNbTEnTtIiJCEAS4u7ur6rr+i+/7f4Rh6CYEDAC7u7u4uLgAEXHyX3WsEO9eSwr3T7McgGFmdqWU+10vICKCUgp3d3e1s7Ozn46Pj78/PT39y/O893qln2HUC10FuK7bvLy8/LVSqXxzfHz8++3trXw2Qz8CmJnDMIRSimu12ptarfbd69evfz4/P6+/xN3fCwSAbNv+amxs7IvFxcXg4ODgt6urqze+77/IzO0byYv4o3J+EvgX4yIhYBP/dWUAAAAASUVORK5CYII=",
     },
     closet: {
-        "url": "https://www.neopets.com/closet.phtml?obj_name=%s",
-        "img": "http://images.neopets.com/items/ffu_illusen_armoire.gif"
+        url: "https://www.neopets.com/closet.phtml?obj_name=%s",
+        img: "http://images.neopets.com/items/ffu_illusen_armoire.gif",
     },
     jni: {
-        "url": "https://items.jellyneo.net/search/?name=%s&name_type=3",
-        "img": "data:image/png;base64,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"
+        url: "https://items.jellyneo.net/search/?name=%s&name_type=3",
+        img: "data:image/png;base64,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",
     },
     battlepedia: {
-        "url": "https://battlepedia.jellyneo.net/index.php?search=%s",
-        "img": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAChklEQVQ4T5XRW0iTARQH8P83Vi7n2CUvm0hroW7aFK1t+nkBe1BYK7KHoCYZXpplPUTkQ0WQQg9FIURiZHRDs8wEK6QNibFhZagT3drmFadJlq3mnM55+cIvIqKmdZ4Pv/M/5xAhigO5LOaGWI975hkGXnzAfxbBSy84oi3Q3vP7/Qv91n6Tw+547PXOtMPeNvYvFoFYdUTJsaPDMTExHKlUitnZWej1+hm705n0/sll13oIsdqgKLyoL9Pp8qanp8FgMCAQCNDU1GQnNi4qDVcrfGshNMAnC05UVlXdYLFYcDqdEIlE8Hg8MJvN9cbaisPrApDtji8pLXWQJElQFAWXywU2m43x8XEMj46Uvbx28lYwhE5AV4I6XbNnb4P2kHab2+3G5OQknSIQCMzdrqlOwYhpcLUtTY7k8DBGoW9h5ZHRgq5fAIDoHF345kh+XVZWdr5EIoHNZgOXy4XF0tNn7m5WkP5uTrGasHFCIbz5HK1GC5X/G/AzzJa84zqpTFotl8tDV9OIxWI0NjY2cB0116+UL3XWGxAYmqBkpj6M/hWgofgcWUSUuE6pUmUxmUzExcWht+V8a1Hq2319I0CHldJ09KMtOPAjDhGmPFiVmJhQIRQKQySCuTenxKfJM7VwTXyhVJ1WTK0J5KSA551H6s4d0Q/ZYtKrkQ5EGgxWbs8gcbe9a6WYnhDsPRkJECu3E3VFauQ6xoCtIqDFBETwgKVl4NNXuLqGKEVQQJOOc8Ua4tI7OxY/ukF99sDhm6OeZsiJyig+kJkEXLhDnQ0K7EpGGmsTUe3zU/f9C2gOZWHZ2ItvJRqic382VK+t9CF16x3xjw0zpeDw+CifD2DqVQ8efAfoI/lhtfaY7AAAAABJRU5ErkJggg=="
+        url: "https://battlepedia.jellyneo.net/index.php?search=%s",
+        img: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAChklEQVQ4T5XRW0iTARQH8P83Vi7n2CUvm0hroW7aFK1t+nkBe1BYK7KHoCYZXpplPUTkQ0WQQg9FIURiZHRDs8wEK6QNibFhZagT3drmFadJlq3mnM55+cIvIqKmdZ4Pv/M/5xAhigO5LOaGWI975hkGXnzAfxbBSy84oi3Q3vP7/Qv91n6Tw+547PXOtMPeNvYvFoFYdUTJsaPDMTExHKlUitnZWej1+hm705n0/sll13oIsdqgKLyoL9Pp8qanp8FgMCAQCNDU1GQnNi4qDVcrfGshNMAnC05UVlXdYLFYcDqdEIlE8Hg8MJvN9cbaisPrApDtji8pLXWQJElQFAWXywU2m43x8XEMj46Uvbx28lYwhE5AV4I6XbNnb4P2kHab2+3G5OQknSIQCMzdrqlOwYhpcLUtTY7k8DBGoW9h5ZHRgq5fAIDoHF345kh+XVZWdr5EIoHNZgOXy4XF0tNn7m5WkP5uTrGasHFCIbz5HK1GC5X/G/AzzJa84zqpTFotl8tDV9OIxWI0NjY2cB0116+UL3XWGxAYmqBkpj6M/hWgofgcWUSUuE6pUmUxmUzExcWht+V8a1Hq2319I0CHldJ09KMtOPAjDhGmPFiVmJhQIRQKQySCuTenxKfJM7VwTXyhVJ1WTK0J5KSA551H6s4d0Q/ZYtKrkQ5EGgxWbs8gcbe9a6WYnhDsPRkJECu3E3VFauQ6xoCtIqDFBETwgKVl4NNXuLqGKEVQQJOOc8Ua4tI7OxY/ukF99sDhm6OeZsiJyig+kJkEXLhDnQ0K7EpGGmsTUe3zU/f9C2gOZWHZ2ItvJRqic382VK+t9CF16x3xjw0zpeDw+CifD2DqVQ8efAfoI/lhtfaY7AAAAABJRU5ErkJggg==",
     },
     dti: {
-        "img": "data:image/gif;base64,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"
+        img: "data:image/gif;base64,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",
     },
     idb: {
-        "url": "https://itemdb.com.br/item/%s",
-        "img": "https://images.neopets.com/themes/h5/basic/images/v3/quickstock-icon.svg"
-    }
+        url: "https://itemdb.com.br/item/%s",
+        img: "https://images.neopets.com/themes/h5/basic/images/v3/quickstock-icon.svg",
+    },
 };
 
 // user has premium toolbar
@@ -119,31 +120,32 @@ function inURL(substr) {
 }
 
 function cleanItem(item) {
-    return item.replaceAll("!", "%21")
-               .replaceAll("#", "%23")
-               .replaceAll("&", "%26")
-               .replaceAll("(", "%28")
-               .replaceAll(")", "%29")
-               .replaceAll("*", "%2A")
-               .replaceAll("+", "%2B")
-               .replaceAll(",", "%2C")
-               .replaceAll("/", "%2F")
-               .replaceAll(":", "%3A")
-               .replaceAll("?", "%3F")
-               .replaceAll(" ", "+");
+    return item
+        .replaceAll("!", "%21")
+        .replaceAll("#", "%23")
+        .replaceAll("&", "%26")
+        .replaceAll("(", "%28")
+        .replaceAll(")", "%29")
+        .replaceAll("*", "%2A")
+        .replaceAll("+", "%2B")
+        .replaceAll(",", "%2C")
+        .replaceAll("/", "%2F")
+        .replaceAll(":", "%3A")
+        .replaceAll("?", "%3F")
+        .replaceAll(" ", "+");
 }
 
 function slugfy(itemName) {
     // for itemdb.com.br
     return itemName
-      .toString()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, "-")
-      .replace(/[^\w-]+/g, "")
-      .replace(/--+/g, "-");
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]+/g, "")
+        .replace(/--+/g, "-");
 }
 
 // overall linker thing
@@ -153,7 +155,7 @@ function makelinks(item, extras) {
 
     item = $.trim(item);
     if (typeof extras === "undefined") {
-        extras = {cash: false, wearable: false, tradeable: true};
+        extras = { cash: false, wearable: false, tradeable: true };
     }
 
     if (typeof extras.tradeable === "undefined") {
@@ -164,7 +166,8 @@ function makelinks(item, extras) {
     const name = cleanItem(item);
 
     if (extras.cash === false && extras.tradeable === true) {
-        if (inURL("quests.phtml") === false) { // doesn't show either SW if you're on a quest
+        if (inURL("quests.phtml") === false) {
+            // doesn't show either SW if you're on a quest
             // SSW
             if (premium) {
                 links += sswurl;
@@ -199,7 +202,11 @@ function makelinks(item, extras) {
 
     // Battlepedia
     if (inURL("dome")) {
-        links += combiner(name, linkmap.battlepedia.url, linkmap.battlepedia.img);
+        links += combiner(
+            name,
+            linkmap.battlepedia.url,
+            linkmap.battlepedia.img
+        );
     }
 
     // DTI
@@ -217,11 +224,12 @@ function makelinks(item, extras) {
 
     // TODO: remove when TP is converted (hopefully)
     // because of how ugly this makes the TP, let's inline it
-    const needInline = inURL("/island/tradingpost.phtml") || inURL("/quickstock.phtml");
+    const needInline =
+        inURL("/island/tradingpost.phtml") || inURL("/quickstock.phtml");
     if (needInline) {
         helper.css({
-            "display": "inline-block",
-            "margin-left": "4px"
+            display: "inline-block",
+            "margin-left": "4px",
         });
     }
 
@@ -267,11 +275,13 @@ if (isBeta) {
         // Snow Faerie Quests
 
         // due to inconsistencies in the ajax requests, we will attempt to do two different kinds of search helper adds
-        $(".item-img + .item-name").find("b").each(function (index, element) {
-            if (!hasSearchHelper(element)) {
-                $(element).after(makelinks($(element).text()));
-            }
-        });
+        $(".item-img + .item-name")
+            .find("b")
+            .each(function (index, element) {
+                if (!hasSearchHelper(element)) {
+                    $(element).after(makelinks($(element).text()));
+                }
+            });
 
         $("img[src*='/items/'] + br + p > b").each(function (index, element) {
             if (!hasSearchHelper(element)) {
@@ -290,22 +300,26 @@ if (isBeta) {
     // Inventory
     if (inURL("inventory")) {
         // the inventory system is more flexible than it used to be, so we have to do this a little differently
-        $(document).ajaxSuccess(
-            function () {
-                $(".item-img + .item-name").each(function (index, element) {
-                    // this will add more and more if you do things like SSW searching, so check first
-                    if (!hasSearchHelper(element)) {
-                        let extras = {
-                            cash: document.getElementById("invDisplay").dataset.type === "nc",
-                            wearable: $(element).parent().find(":contains('wearable')").length > 0,
-                            tradeable: $(element).parent().find(":contains('(no trade)')").length === 0,
-                            itemid: -1
-                        };
-                        $(element).after(makelinks($(element).text(), extras));
-                    }
-                });
-            }
-        );
+        $(document).ajaxSuccess(function () {
+            $(".item-img + .item-name").each(function (index, element) {
+                // this will add more and more if you do things like SSW searching, so check first
+                if (!hasSearchHelper(element)) {
+                    let extras = {
+                        cash:
+                            document.getElementById("invDisplay").dataset
+                                .type === "nc",
+                        wearable:
+                            $(element).parent().find(":contains('wearable')")
+                                .length > 0,
+                        tradeable:
+                            $(element).parent().find(":contains('(no trade)')")
+                                .length === 0,
+                        itemid: -1,
+                    };
+                    $(element).after(makelinks($(element).text(), extras));
+                }
+            });
+        });
     }
 
     // Kitchen Quest
@@ -335,7 +349,10 @@ if (isBeta) {
     // Illusen & Jhudora
     if ($(".faerie-img").exists()) {
         let itemname = $(":contains('Where is my') > b").text();
-        $(":contains('Where is my')").parent().find("img[src*='/items/']").after(makelinks(itemname));
+        $(":contains('Where is my')")
+            .parent()
+            .find("img[src*='/items/']")
+            .after(makelinks(itemname));
     }
 
     // Shop Wiz Auto-Exact
@@ -347,7 +364,9 @@ if (isBeta) {
     // Hospital
     if (inURL("/hospital.phtml")) {
         $(".nh-disease-cure > span > b").each(function (k, v) {
-            $(v).parent().after(makelinks($(v).text()));
+            $(v)
+                .parent()
+                .after(makelinks($(v).text()));
         });
     }
 
@@ -356,15 +375,16 @@ if (isBeta) {
         function addQuestLogLinks() {
             // Daily rewards
             $(".ql-reward-item + .ql-reward-label + .search-helper").remove();
-            $(".ql-reward-item + .ql-reward-label").each(function(k, v) {
+            $(".ql-reward-item + .ql-reward-label").each(function (k, v) {
                 $(v).after(makelinks($(v).text()));
             });
 
             // Bonus rewards
             $(".ql-bonus-reward > .search-helper").remove();
-            $(".ql-bonus-reward > .ql-bonus-name").each(function(k, v) {
+            $(".ql-bonus-reward > .ql-bonus-name").each(function (k, v) {
                 let itemname = $(v).text();
-                if (itemname.endsWith(",000 NP")) { // ignore NP rewards
+                if (itemname.endsWith(",000 NP")) {
+                    // ignore NP rewards
                     return;
                 }
                 $(v).after(makelinks(itemname));
@@ -375,18 +395,18 @@ if (isBeta) {
 
         const questLogContent = document.getElementById("QuestLogContent");
         if (questLogContent) {
-            const observer = new MutationObserver(function(mutations, obs) {
+            const observer = new MutationObserver(function (mutations, obs) {
                 obs.disconnect();
                 addQuestLogLinks();
                 obs.observe(questLogContent, {
                     childList: true,
-                    subtree: true
+                    subtree: true,
                 });
             });
 
             observer.observe(questLogContent, {
                 childList: true,
-                subtree: true
+                subtree: true,
             });
         }
     }
@@ -394,21 +414,26 @@ if (isBeta) {
     // Tea Time With Tavi
     if (inURL("/games/teatime")) {
         function TaviQuest() {
-            $(".ttwt-item > img[src*='/items/'] + span").each(function (index, element) {
+            $(".ttwt-item > img[src*='/items/'] + span").each(function (
+                index,
+                element
+            ) {
                 if (!hasSearchHelper(element)) {
                     $(element).after(makelinks($(element).text()));
                 }
             });
         }
         TaviQuest();
-        $(document).ajaxSuccess(function() {setTimeout(TaviQuest, 1000);});
+        $(document).ajaxSuccess(function () {
+            setTimeout(TaviQuest, 1000);
+        });
     }
 
     // Igloo Garage Sale
     if (inURL("/winter/igloo.phtml")) {
-      $(".igs-item b").each(function (index, element) {
-        $(element).after(makelinks($(element).text()));
-      });
+        $(".igs-item b").each(function (index, element) {
+            $(element).after(makelinks($(element).text()));
+        });
     }
 
     function sswopen(item) {
@@ -442,26 +467,26 @@ if (isBeta) {
      Battledome
     */
 
-    // Main Shops
-    if (document.URL.includes("objects.phtml?") && document.URL.includes("type=shop")) {
-        $("img[src*='/items/']").parent().parent().find("b").each(function (k, v) {
-            $(v).after(makelinks($(v).text()));
-        });
-    }
-
     // Trading Post
     if (document.URL.includes("/island/tradingpost.phtml")) {
         $("img[src*='/items/']").each(function (k, v) {
-            $(this.nextSibling).after(makelinks($(this)[0].nextSibling.nodeValue));
+            $(this.nextSibling).after(
+                makelinks($(this)[0].nextSibling.nodeValue)
+            );
         });
     }
 
     // Redeeming Cash
     if (document.URL.includes("process_cash_object")) {
-        extras = {cash: true, wearable: true};
-        $("img[src*='/items/']").parent().find("b").each(function (k, v) {
-            $(v).before("<br>").after(makelinks($(v).text(), extras));
-        });
+        extras = { cash: true, wearable: true };
+        $("img[src*='/items/']")
+            .parent()
+            .find("b")
+            .each(function (k, v) {
+                $(v)
+                    .before("<br>")
+                    .after(makelinks($(v).text(), extras));
+            });
     }
 
     // Auctions
@@ -471,11 +496,17 @@ if (isBeta) {
         fixname = fixname.substr(0, fixname.indexOf(" (own")); // remove "owned by..."
         nameb.parent().find("img").after(makelinks(fixname));
     }
-    if (document.URL.includes("auctions.phtml") || document.URL.includes("genie.phtml")) {
-        $("a[href*='?type=bids&auction_id=']:not(:has('img'))").each(function (index, element) {
+    if (
+        document.URL.includes("auctions.phtml") ||
+        document.URL.includes("genie.phtml")
+    ) {
+        $("a[href*='?type=bids&auction_id=']:not(:has('img'))").each(function (
+            index,
+            element
+        ) {
             const itemname = $(element).text();
             $(element).after(makelinks(itemname));
-        })
+        });
     }
 
     // SDB & Closet
@@ -483,26 +514,53 @@ if (isBeta) {
     let isCloset = document.URL.includes("closet");
     if (isSDB || isCloset) {
         $("img[src*='/items/']").each(function (k, v) {
-            let itemInput = $(v).parent().parent().find("td").eq(5).find("input");
-            let id = itemInput.attr("data-item_id") || itemInput.attr("name").match(/\d+/g)[0];
+            let itemInput = $(v)
+                .parent()
+                .parent()
+                .find("td")
+                .eq(5)
+                .find("input");
+            let id =
+                itemInput.attr("data-item_id") ||
+                itemInput.attr("name").match(/\d+/g)[0];
 
-            let isWearable = isCloset || $(v).parent().parent().find("td").eq(1).text().includes("(wearable)");
+            let isWearable =
+                isCloset ||
+                $(v)
+                    .parent()
+                    .parent()
+                    .find("td")
+                    .eq(1)
+                    .text()
+                    .includes("(wearable)");
             let isNeoCash = false;
-            if(isSDB) {
+            if (isSDB) {
                 let category = $(v).parent().parent().find("td").eq(3);
                 isNeoCash = category.text().trim() === "Neocash";
             } else if (isCloset) {
                 // this is not 100% accurate, see: https://items.jellyneo.net/item-error-list/rarities/
-                isNeoCash = $(v).parent().next("td").text().includes("(Artifact - 500)");
+                isNeoCash = $(v)
+                    .parent()
+                    .next("td")
+                    .text()
+                    .includes("(Artifact - 500)");
             }
-            let extras = {cash: isNeoCash, wearable: isWearable, itemid: id};
+            let extras = { cash: isNeoCash, wearable: isWearable, itemid: id };
             let nametd = $(v).parent().parent().find("td").eq(1);
-            nametd.find("b").eq(0).after(makelinks(nametd.find("b").eq(0).justtext(), extras));
+            nametd
+                .find("b")
+                .eq(0)
+                .after(makelinks(nametd.find("b").eq(0).justtext(), extras));
         });
     }
 
     // Your Shop
-    if (document.URL.includes("type=your") || document.URL.includes("market_your") || $("[name=subbynext]").length === 2) { // because pressing the Previous/Next 30 is a POST and has nothing of value in the URL
+    if (
+        document.URL.includes("type=your") ||
+        document.URL.includes("market_your") ||
+        $("[name=subbynext]").length === 2
+    ) {
+        // because pressing the Previous/Next 30 is a POST and has nothing of value in the URL
         $("img[src*='/items/']").each(function (k, v) {
             let nametd = $(v).parent().parent().find("td").eq(0);
             let itemname = nametd.text();
@@ -547,12 +605,21 @@ if (isBeta) {
     if (document.URL.includes("employment")) {
         if (document.URL.includes("type=jobs")) {
             $("b:contains('Find')").each(function (k, v) {
-                let itemname = $(v).parent().clone().find("b").remove().end().html().split("<br>")[0];
+                let itemname = $(v)
+                    .parent()
+                    .clone()
+                    .find("b")
+                    .remove()
+                    .end()
+                    .html()
+                    .split("<br>")[0];
                 $($(v)[0].nextSibling).after(makelinks(itemname));
             });
         }
         if (document.URL.includes("job_id")) {
-            $("b:contains('Find')").eq(0).after(makelinks($("b:contains('Find')").eq(0).justtext()));
+            $("b:contains('Find')")
+                .eq(0)
+                .after(makelinks($("b:contains('Find')").eq(0).justtext()));
         }
     }
 
@@ -566,35 +633,47 @@ if (isBeta) {
 
     // Kadoatery
     if (document.URL.includes("games/kadoatery")) {
-        $("td:contains('You should give it'):not(:contains('Thanks,'))").each(function (k, v) {
-            let itemname = $(v).find("strong").last();
-            itemname.after(makelinks(itemname.text()));
-        });
+        $("td:contains('You should give it'):not(:contains('Thanks,'))").each(
+            function (k, v) {
+                let itemname = $(v).find("strong").last();
+                itemname.after(makelinks(itemname.text()));
+            }
+        );
     }
 
     // General Store
     if (document.URL.includes("generalstore.phtml")) {
-        $("td:contains('Cost'):not(:has('td'))").find("strong").each(function (index, element) {
-            $(element).after(makelinks($(element).text()));
-        });
+        $("td:contains('Cost'):not(:has('td'))")
+            .find("strong")
+            .each(function (index, element) {
+                $(element).after(makelinks($(element).text()));
+            });
     }
 
     // Hidden Tower
     if (document.URL.includes("hiddentower938.phtml")) {
-        $(".content table").find("b:not([style*='red;'])").each(function (index, element) {
-            $(element).after(makelinks($(element).text()));
-        });
+        $(".content table")
+            .find("b:not([style*='red;'])")
+            .each(function (index, element) {
+                $(element).after(makelinks($(element).text()));
+            });
     }
 
     // Your Shop's Sales History
     if (document.URL.includes("market.phtml?type=sales")) {
-        $('[value="Clear Sales History"]').parent().parent().parent().parent().find('tr').each(function (index, element) {
-            // make sure it's not the header or footer of this table
-            let cell = $(element).find("td").eq(1);
-            if (cell.attr('bgcolor') === "#ffffcc") {
-                $(cell).append(makelinks($(cell).text()));
-            }
-        });
+        $('[value="Clear Sales History"]')
+            .parent()
+            .parent()
+            .parent()
+            .parent()
+            .find("tr")
+            .each(function (index, element) {
+                // make sure it's not the header or footer of this table
+                let cell = $(element).find("td").eq(1);
+                if (cell.attr("bgcolor") === "#ffffcc") {
+                    $(cell).append(makelinks($(cell).text()));
+                }
+            });
     }
 
     // Quickstock
@@ -613,15 +692,21 @@ if (isBeta) {
     if (document.URL.includes("/dome/neopets")) {
         $(".equipFrame").each(function (index, element) {
             const itemname = $(element).text().trim();
-            if (itemname) { // ignore if empty slot
+            if (itemname) {
+                // ignore if empty slot
                 $(makelinks(itemname)).appendTo($(element));
             }
         });
-        $(".equipTable").css({"overflow-y": "scroll"});
+        $(".equipTable").css({ "overflow-y": "scroll" });
     }
 
     function sswlimited(item) {
-        return (/Nerkmid($|.X+$)/.test(item) || item.endsWith("Paint Brush") || item.endsWith("Transmogrification Potion") || item.endsWith("Laboratory Map"));
+        return (
+            /Nerkmid($|.X+$)/.test(item) ||
+            item.endsWith("Paint Brush") ||
+            item.endsWith("Transmogrification Potion") ||
+            item.endsWith("Laboratory Map")
+        );
     }
 
     function sswopen(item) {
@@ -630,7 +715,7 @@ if (isBeta) {
         }
 
         if ($("#ssw-tabs-1").hasClass("ui-tabs-hide")) {
-            $('#ssw-tabs').tabs('select', 0);
+            $("#ssw-tabs").tabs("select", 0);
         }
 
         $("#price-limited").prop("checked", sswlimited(item));
