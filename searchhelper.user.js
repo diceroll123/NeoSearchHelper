@@ -44,7 +44,7 @@ const imgSize = 20; // for the search images
 
 $(`<style type='text/css'>
 .searchimg { cursor: pointer; height: ${imgSize}px !important; width: ${imgSize}px !important; border: none !important; border-radius: 0px !important;}
-.search-helper { margin-top: 0; margin-bottom: 0; }
+.search-helper { display: block; margin-top: 0; margin-bottom: 0; }
 </style>`).appendTo("head");
 
 jQuery.fn.exists = function () {
