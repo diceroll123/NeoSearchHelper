@@ -58,19 +58,19 @@ const linkmap = {
     // for urls and images for each search type
     // if the image is not from images.neopets.com, base64 it
     ssw: {
-        img: "http://images.neopets.com/premium/shopwizard/ssw-icon.svg",
+        img: "https://images.neopets.com/premium/shopwizard/ssw-icon.svg",
     },
     sw: {
         url: "https://www.neopets.com/shops/wizard.phtml?string=%s",
-        img: "http://images.neopets.com/themes/h5/basic/images/shopwizard-icon.png",
+        img: "https://images.neopets.com/themes/h5/basic/images/shopwizard-icon.png",
     },
     tp: {
         url: "https://www.neopets.com/island/tradingpost.phtml?type=browse&criteria=item_exact&search_string=%s",
-        img: "http://images.neopets.com/themes/h5/basic/images/tradingpost-icon.png",
+        img: "https://images.neopets.com/themes/h5/basic/images/tradingpost-icon.png",
     },
     au: {
         url: "https://www.neopets.com/genie.phtml?type=process_genie&criteria=exact&auctiongenie=%s",
-        img: "http://images.neopets.com/themes/h5/basic/images/auction-icon.png",
+        img: "https://images.neopets.com/themes/h5/basic/images/auction-icon.png",
     },
     sdb: {
         url: "https://www.neopets.com/safetydeposit.phtml?obj_name=%s&category=0",
@@ -78,7 +78,7 @@ const linkmap = {
     },
     closet: {
         url: "https://www.neopets.com/closet.phtml?obj_name=%s",
-        img: "http://images.neopets.com/items/ffu_illusen_armoire.gif",
+        img: "https://images.neopets.com/items/ffu_illusen_armoire.gif",
     },
     jni: {
         url: "https://items.jellyneo.net/search/?name=%s&name_type=3",
